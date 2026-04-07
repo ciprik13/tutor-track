@@ -77,7 +77,7 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div
             onClick={() => navigate('/students')}
             className="bg-(--bg-card) border border-(--border) rounded-xl p-4 cursor-pointer hover:border-(--border) transition-colors"

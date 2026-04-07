@@ -59,7 +59,7 @@ export default function StudentsPage() {
             placeholder="Caută după nume..."
             className="flex-1 bg-(--bg-card) border border-(--border) rounded-lg px-4 py-2 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 overflow-x-auto pb-1">
             {(['all', 'active', 'inactive'] as const).map(s => (
               <button
                 key={s}
