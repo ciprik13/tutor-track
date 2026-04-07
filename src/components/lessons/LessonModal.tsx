@@ -4,6 +4,8 @@ import { useStudents } from '@/queries/useStudents'
 import { useSelector } from 'react-redux'
 import type { RootState } from '@/store'
 import type { Lesson } from '@/types'
+import DatePicker from '@/components/ui/DatePicker'
+import { toLocalISOString } from '@/lib/dateUtils'
 
 interface Props {
   lesson: Lesson | null
@@ -16,9 +18,9 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
   const { data: students = [] } = useStudents()
 
   const [form, setForm] = useState<Omit<Lesson, 'id'>>({
-    studentId: lesson?.studentId ?? preselectedStudentId ?? (students[0]?.id ?? 0),
+    studentId: lesson?.studentId ?? preselectedStudentId ?? 0,
     title: lesson?.title ?? '',
-    date: lesson?.date ?? new Date().toISOString().slice(0, 16),
+    date: lesson?.date ?? toLocalISOString(new Date()),
     durationMinutes: lesson?.durationMinutes ?? 60,
     pricePerSession: lesson?.pricePerSession ?? profile.defaultPrice60,
     status: lesson?.status ?? 'done',
@@ -65,56 +67,39 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
   const isValid = form.studentId && form.date
 
   return (
-    <div
-      className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
-      onClick={e => e.target === e.currentTarget && onClose()}
-    >
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
       <div className="bg-(--bg-card) border border-(--border) rounded-2xl w-full max-w-md p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-(--text-1) font-bold text-lg">
             {lesson ? 'Editează lecție' : 'Lecție nouă'}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-(--text-3) hover:text-(--text-1) transition-colors text-xl leading-none"
-          >
-            ×
-          </button>
+          <button onClick={onClose} className="text-(--text-3) hover:text-(--text-1) transition-colors text-xl leading-none">×</button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Student</label>
-            <select
-              name="studentId"
-              value={form.studentId}
-              onChange={handleChange}
+            <label className="block text-sm text-(--text-2) mb-1">Student</label>
+            <select name="studentId" value={form.studentId} onChange={handleChange}
               className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
             >
+              <option value={0} disabled>Selectează student</option>
               {students.map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm text-gray-400 mb-1">Data și ora</label>
-            <input
-              name="date"
-              type="datetime-local"
-              value={form.date}
-              onChange={handleChange}
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
-            />
-          </div>
+          <DatePicker
+            label="Data și ora"
+            value={form.date}
+            onChange={val => setForm(prev => ({ ...prev, date: val }))}
+            includeTime={true}
+          />
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Durată</label>
-              <select
-                name="durationMinutes"
-                value={form.durationMinutes}
-                onChange={handleChange}
+              <label className="block text-sm text-(--text-2) mb-1">Durată</label>
+              <select name="durationMinutes" value={form.durationMinutes} onChange={handleChange}
                 className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value={60}>60 min</option>
@@ -123,12 +108,8 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
               </select>
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Preț (MDL)</label>
-              <input
-                name="pricePerSession"
-                type="number"
-                value={form.pricePerSession}
-                onChange={handleChange}
+              <label className="block text-sm text-(--text-2) mb-1">Preț (MDL)</label>
+              <input name="pricePerSession" type="number" value={form.pricePerSession} onChange={handleChange}
                 className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
@@ -136,11 +117,8 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Status lecție</label>
-              <select
-                name="status"
-                value={form.status}
-                onChange={handleChange}
+              <label className="block text-sm text-(--text-2) mb-1">Status lecție</label>
+              <select name="status" value={form.status} onChange={handleChange}
                 className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="done">Efectuat</option>
@@ -148,11 +126,8 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
               </select>
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Status plată</label>
-              <select
-                name="paymentStatus"
-                value={form.paymentStatus}
-                onChange={handleChange}
+              <label className="block text-sm text-(--text-2) mb-1">Status plată</label>
+              <select name="paymentStatus" value={form.paymentStatus} onChange={handleChange}
                 className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="unpaid">Neachitat</option>
@@ -162,32 +137,20 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Note</label>
-            <textarea
-              name="notes"
-              value={form.notes}
-              onChange={handleChange}
-              rows={2}
+            <label className="block text-sm text-(--text-2) mb-1">Note</label>
+            <textarea name="notes" value={form.notes} onChange={handleChange} rows={2}
               placeholder="Observații opționale..."
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-lime-400 transition-colors resize-none"
             />
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-(--bg-input) text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
-            >
-              Anulează
-            </button>
-            <button
-              type="submit"
-              disabled={!isValid}
+            <button type="button" onClick={onClose}
+              className="flex-1 bg-(--bg-input) text-(--text-2) font-medium rounded-lg py-2.5 text-sm hover:bg-(--bg-card-hover) transition-colors"
+            >Anulează</button>
+            <button type="submit" disabled={!isValid}
               className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
-            >
-              {lesson ? 'Salvează' : 'Adaugă'}
-            </button>
+            >{lesson ? 'Salvează' : 'Adaugă'}</button>
           </div>
         </form>
       </div>
