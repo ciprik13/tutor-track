@@ -84,7 +84,7 @@ export default function LessonsPage() {
           </div>
           <button
             onClick={handleAdd}
-            className="bg-lime-400 text-gray-950 font-semibold rounded-lg px-4 py-2 text-sm hover:opacity-90 transition-opacity"
+            className="bg-[#2b6777] text-white font-semibold rounded-lg px-4 py-2 text-sm hover:opacity-90 transition-opacity"
           >
             + Adaugă lecție
           </button>
@@ -117,7 +117,7 @@ export default function LessonsPage() {
                 e.target.value ? Number(e.target.value) : undefined,
               )
             }
-            className="bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2 text-sm text-(--text-1) focus:outline-none focus:border-lime-400 transition-colors"
+            className="bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2 text-sm text-(--text-1) focus:outline-none focus:border-[#2b6777] transition-colors"
           >
             <option value="">Toți studenții</option>
             {students.map((s) => (
@@ -136,7 +136,7 @@ export default function LessonsPage() {
                 onClick={() => setPaymentFilter(p)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   paymentFilter === p
-                    ? "bg-lime-400 text-gray-950"
+                    ? "bg-[#2b6777] text-white"
                     : "bg-(--bg-card) text-gray-400 border border-(--border) hover:border-gray-600"
                 }`}
               >
@@ -157,7 +157,7 @@ export default function LessonsPage() {
             <p className="text-(--text-3) text-sm">Nicio lecție găsită</p>
             <button
               onClick={handleAdd}
-              className="mt-4 text-lime-400 text-sm hover:underline"
+              className="mt-4 text-[#52ab98] text-sm hover:underline"
             >
               Adaugă prima lecție →
             </button>
@@ -200,8 +200,8 @@ export default function LessonsPage() {
                     onClick={() => handleToggle(lesson)}
                     className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
                       lesson.paymentStatus === "paid"
-                        ? "bg-lime-400/10 text-lime-400 hover:bg-lime-400/20"
-                        : "bg-amber-400/10 text-amber-400 hover:bg-amber-400/20"
+                        ? "bg-[#2b6777]/10 text-[#52ab98] hover:bg-[#2b6777]/20"
+                        : "bg-[#c07a20]/10 text-[#c07a20] hover:bg-[#c07a20]/20"
                     }`}
                   >
                     {lesson.paymentStatus === "paid" ? "Achitat" : "Neachitat"}

@@ -80,7 +80,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
           <div>
             <label className="block text-sm text-(--text-2) mb-1">Student</label>
             <select name="studentId" value={form.studentId} onChange={handleChange}
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
             >
               {students.map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -89,13 +89,13 @@ export default function PaymentModal({ payment, onClose }: Props) {
           </div>
 
           {!payment && unpaidLessons.length > 0 && (
-            <div className="bg-amber-400/10 border border-amber-400/20 rounded-lg px-4 py-3 flex items-center justify-between">
+            <div className="bg-[#c07a20]/10 border border-amber-400/20 rounded-lg px-4 py-3 flex items-center justify-between">
               <div>
-                <p className="text-amber-400 text-xs font-medium">{unpaidLessons.length} lecții neachitate</p>
+                <p className="text-[#c07a20] text-xs font-medium">{unpaidLessons.length} lecții neachitate</p>
                 <p className="text-amber-300 text-sm font-bold mt-0.5">Total: {unpaidTotal} {profile.currency}</p>
               </div>
               <button type="button" onClick={() => setAmount(unpaidTotal.toString())}
-                className="text-xs bg-amber-400 text-gray-950 font-semibold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+                className="text-xs bg-amber-400 text-white font-semibold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
               >Folosește suma</button>
             </div>
           )}
@@ -105,13 +105,13 @@ export default function PaymentModal({ payment, onClose }: Props) {
               <label className="block text-sm text-(--text-2) mb-1">Sumă</label>
               <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
                 placeholder="ex. 200" min={0}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Monedă</label>
               <select name="currency" value={form.currency} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value="MDL">MDL</option>
                 <option value="USD">USD</option>
@@ -124,7 +124,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
             <label className="block text-sm text-(--text-2) mb-1">Perioadă</label>
             <input name="period" value={form.period} onChange={handleChange}
               placeholder="ex. Aprilie 2026"
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors"
             />
           </div>
 
@@ -132,13 +132,13 @@ export default function PaymentModal({ payment, onClose }: Props) {
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Data</label>
               <input name="date" type="date" value={form.date} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Status</label>
               <select name="status" value={form.status} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value="unpaid">Neachitat</option>
                 <option value="paid">Achitat</option>
@@ -151,7 +151,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
             <label className="block text-sm text-(--text-2) mb-1">Note</label>
             <textarea name="notes" value={form.notes} onChange={handleChange} rows={2}
               placeholder="Observații opționale..."
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors resize-none"
             />
           </div>
 
@@ -160,7 +160,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
               className="flex-1 bg-(--bg-input) text-(--text-2) font-medium rounded-lg py-2.5 text-sm hover:bg-(--bg-card-hover) transition-colors"
             >Anulează</button>
             <button type="submit" disabled={!isValid}
-              className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
+              className="flex-1 bg-[#2b6777] text-white font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
             >{payment ? 'Salvează' : 'Adaugă'}</button>
           </div>
         </form>

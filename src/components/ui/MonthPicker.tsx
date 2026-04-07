@@ -111,8 +111,8 @@ export default function MonthPicker({ value, onChange, label }: Props) {
               onClick={() => handleSelect(i)}
               style={{
                 padding: '9px 4px', borderRadius: '8px', border: 'none',
-                background: isSelected ? '#c8fb57' : isCurrentMonth ? c.bg3 : c.bg2,
-                color: isSelected ? '#0a0a0f' : isCurrentMonth ? '#c8fb57' : c.text1,
+                background: isSelected ? '#52ab98' : isCurrentMonth ? c.bg3 : c.bg2,
+                color: isSelected ? '#0a0a0f' : isCurrentMonth ? '#52ab98' : c.text1,
                 fontSize: '12px', fontWeight: isSelected ? 600 : 400,
                 cursor: 'pointer', transition: 'all 0.12s',
               }}
@@ -139,7 +139,7 @@ export default function MonthPicker({ value, onChange, label }: Props) {
         onMouseDown={e => { e.stopPropagation(); openPicker() }}
         style={{
           display:'flex', alignItems:'center', justifyContent:'space-between',
-          background: c.bg2, border:`1px solid ${open ? '#c8fb57' : c.border}`,
+          background: c.bg2, border:`1px solid ${open ? '#52ab98' : c.border}`,
           borderRadius:'8px', padding:'8px 12px', cursor:'pointer',
           fontSize:'13px', color: c.text1, minHeight:'40px',
           transition: 'border-color 0.15s', gap: '8px',

@@ -62,7 +62,7 @@ export default function DashboardPage() {
         <div className="flex items-start justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-(--text-1) tracking-tight">
-              {greeting()}, <span className="text-lime-400">{profile.name.split(' ')[0]}</span>
+              {greeting()}, <span className="text-[#52ab98]">{profile.name.split(' ')[0]}</span>
             </h1>
             <p className="text-(--text-2) text-sm mt-1">
               {new Date().toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
@@ -70,7 +70,7 @@ export default function DashboardPage() {
           </div>
           <button
             onClick={() => setLessonModal(true)}
-            className="bg-lime-400 text-gray-950 font-semibold rounded-lg px-4 py-2.5 text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
+            className="bg-[#2b6777] text-white font-semibold rounded-lg px-4 py-2.5 text-sm hover:opacity-90 transition-opacity flex items-center gap-2"
           >
             <span className="text-lg leading-none">+</span>
             Lecție nouă
@@ -105,7 +105,7 @@ export default function DashboardPage() {
             className="bg-(--bg-card) border border-(--border) rounded-xl p-4 cursor-pointer hover:border-(--border) transition-colors"
           >
             <p className="text-(--text-2) text-xs uppercase tracking-wider mb-3">Total neachitat</p>
-            <p className={`font-bold text-3xl ${unpaidTotal > 0 ? 'text-amber-400' : 'text-lime-400'}`}>
+            <p className={`font-bold text-3xl ${unpaidTotal > 0 ? 'text-[#c07a20]' : 'text-[#52ab98]'}`}>
               {unpaidTotal}
             </p>
             <p className="text-(--text-3) text-xs mt-2">{profile.currency}</p>
@@ -127,7 +127,7 @@ export default function DashboardPage() {
               <h2 className="text-(--text-1) font-semibold text-sm">Activitate recentă</h2>
               <button
                 onClick={() => navigate('/lessons')}
-                className="text-lime-400 text-xs hover:underline"
+                className="text-[#52ab98] text-xs hover:underline"
               >
                 Vezi toate →
               </button>
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                 <p className="text-(--text-3) text-sm">Nicio activitate încă</p>
                 <button
                   onClick={() => setLessonModal(true)}
-                  className="mt-3 text-lime-400 text-xs hover:underline"
+                  className="mt-3 text-[#52ab98] text-xs hover:underline"
                 >
                   Adaugă prima lecție →
                 </button>
@@ -152,7 +152,7 @@ export default function DashboardPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div className={`w-2 h-2 rounded-full shrink-0 ${
-                        lesson.paymentStatus === 'paid' ? 'bg-lime-400' : 'bg-amber-400'
+                        lesson.paymentStatus === 'paid' ? 'bg-[#2b6777]' : 'bg-amber-400'
                       }`} />
                       <div>
                         <p className="text-(--text-1) text-sm font-medium">{getStudentName(lesson.studentId)}</p>
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                     <div className="text-right">
                       <p className="text-(--text-1) text-sm font-bold">{lesson.pricePerSession} {profile.currency}</p>
                       <p className={`text-xs mt-0.5 ${
-                        lesson.paymentStatus === 'paid' ? 'text-lime-400' : 'text-amber-400'
+                        lesson.paymentStatus === 'paid' ? 'text-[#52ab98]' : 'text-[#c07a20]'
                       }`}>
                         {lesson.paymentStatus === 'paid' ? 'Achitat' : 'Neachitat'}
                       </p>
@@ -180,7 +180,7 @@ export default function DashboardPage() {
               <h2 className="text-(--text-1) font-semibold text-sm">Studenți activi</h2>
               <button
                 onClick={() => navigate('/students')}
-                className="text-lime-400 text-xs hover:underline"
+                className="text-[#52ab98] text-xs hover:underline"
               >
                 Vezi toți →
               </button>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
                 <p className="text-(--text-3) text-sm">Niciun student activ</p>
                 <button
                   onClick={() => navigate('/students')}
-                  className="mt-3 text-lime-400 text-xs hover:underline"
+                  className="mt-3 text-[#52ab98] text-xs hover:underline"
                 >
                   Adaugă primul student →
                 </button>
@@ -214,7 +214,7 @@ export default function DashboardPage() {
                       className="px-5 py-3.5 border-b border-(--border) last:border-0 flex items-center justify-between cursor-pointer hover:bg-(--bg-input)/50 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-(--bg-input) flex items-center justify-center text-xs font-bold text-lime-400">
+                        <div className="w-8 h-8 rounded-lg bg-(--bg-input) flex items-center justify-center text-xs font-bold text-[#52ab98]">
                           {getInitials(student.name)}
                         </div>
                         <div>
@@ -223,7 +223,7 @@ export default function DashboardPage() {
                         </div>
                       </div>
                       {studentUnpaid > 0 && (
-                        <span className="text-xs bg-amber-400/10 text-amber-400 px-2 py-1 rounded-lg font-medium">
+                        <span className="text-xs bg-[#c07a20]/10 text-[#c07a20] px-2 py-1 rounded-lg font-medium">
                           {studentUnpaid} {profile.currency}
                         </span>
                       )}

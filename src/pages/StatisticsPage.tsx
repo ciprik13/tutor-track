@@ -42,14 +42,14 @@ export default function StatisticsPage() {
   const bestMonth = monthlyData.reduce((best, m) => m.total > best.total ? m : best, monthlyData[0])
 
   const studentData = [
-    { name: 'Activi', value: students.filter(s => s.status === 'active').length, color: '#c8fb57' },
+    { name: 'Activi', value: students.filter(s => s.status === 'active').length, color: isDark ? "#52ab98" : "#2b6777" },
     { name: 'Inactivi', value: students.filter(s => s.status === 'inactive').length, color: isDark ? '#2a2a35' : '#e8e5e0' },
   ]
 
   const durationData = [
-    { name: '60 min', value: yearLessons.filter(l => l.durationMinutes === 60).length, color: '#c8fb57' },
-    { name: '90 min', value: yearLessons.filter(l => l.durationMinutes === 90).length, color: '#4ecdc4' },
-    { name: '120 min', value: yearLessons.filter(l => l.durationMinutes === 120).length, color: '#ffb547' },
+    { name: '60 min', value: yearLessons.filter(l => l.durationMinutes === 60).length, color: isDark ? "#52ab98" : "#2b6777" },
+    { name: '90 min', value: yearLessons.filter(l => l.durationMinutes === 90).length, color: '#2b6777' },
+    { name: '120 min', value: yearLessons.filter(l => l.durationMinutes === 120).length, color: '#c8d8e4' },
   ]
 
   const cardStyle = {
@@ -113,7 +113,7 @@ export default function StatisticsPage() {
                 <YAxis tick={{ fontSize: 11, fill: textColor }} axisLine={false} tickLine={false} />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '12px', color: textColor }} />
-                <Line type="monotone" dataKey="total" name="Total" stroke="#c8fb57" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+                <Line type="monotone" dataKey="total" name="Total" stroke="#52ab98" strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
                 <Line type="monotone" dataKey="achitat" name="achitat" stroke="#4ecdc4" strokeWidth={2} dot={false} activeDot={{ r: 4 }} strokeDasharray="4 4" />
               </LineChart>
             </ResponsiveContainer>
@@ -129,7 +129,7 @@ export default function StatisticsPage() {
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: textColor }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: textColor }} axisLine={false} tickLine={false} allowDecimals={false} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="lectii" name="lectii" fill="#c8fb57" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="lectii" name="lectii" fill="#2b6777" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

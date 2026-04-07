@@ -167,8 +167,8 @@ export default function DatePicker({ value, onChange, includeTime = false, label
                 onClick={() => handleDayClick(day)}
                 style={{
                   padding:'6px 0', borderRadius:'6px', border:'none',
-                  background: isSelected ? '#c8fb57' : 'transparent',
-                  color: isSelected ? '#0a0a0f' : isToday ? '#c8fb57' : c.text1,
+                  background: isSelected ? '#52ab98' : 'transparent',
+                  color: isSelected ? '#0a0a0f' : isToday ? '#52ab98' : c.text1,
                   fontSize:'12px', cursor:'pointer', fontWeight: isSelected || isToday ? 600 : 400,
                   textAlign:'center', transition:'background 0.1s',
                 }}
@@ -193,7 +193,7 @@ export default function DatePicker({ value, onChange, includeTime = false, label
                   style={{
                     display:'block', width:'100%', padding:'6px 4px',
                     borderRadius:'6px', border:'none', textAlign:'center',
-                    background: isActive ? '#c8fb57' : 'transparent',
+                    background: isActive ? '#52ab98' : 'transparent',
                     color: isActive ? '#0a0a0f' : c.text1,
                     fontSize:'12px', cursor:'pointer', fontWeight: isActive ? 600 : 400,
                     marginBottom:'2px', transition:'background 0.1s',
@@ -219,7 +219,7 @@ export default function DatePicker({ value, onChange, includeTime = false, label
         onMouseDown={e => { e.stopPropagation(); openPicker() }}
         style={{
           display:'flex', alignItems:'center', justifyContent:'space-between', gap:'8px',
-          background: c.bg2, border:`1px solid ${open ? '#c8fb57' : c.border}`,
+          background: c.bg2, border:`1px solid ${open ? '#52ab98' : c.border}`,
           borderRadius:'8px', padding:'8px 12px', cursor:'pointer',
           fontSize:'13px', color: c.text1, minHeight:'40px',
           transition: 'border-color 0.15s',

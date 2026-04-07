@@ -45,7 +45,7 @@ export default function OnboardingPage() {
       <div className="w-full max-w-md">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white tracking-tight">
-            Tutor<span className="text-lime-400">Track</span>
+            Tutor<span className="text-[#52ab98]">Track</span>
           </h1>
           <p className="text-gray-400 mt-2 text-sm">
             Configurează profilul tău pentru a începe
@@ -64,7 +64,7 @@ export default function OnboardingPage() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="ex. Maria Andrei"
-                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
             <div>
@@ -75,7 +75,7 @@ export default function OnboardingPage() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="ex. maria@email.com"
-                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
             <div>
@@ -85,7 +85,7 @@ export default function OnboardingPage() {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="ex. +373 69 000 000"
-                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function OnboardingPage() {
                     type="number"
                     value={form[`defaultPrice${min}` as keyof typeof form]}
                     onChange={handleChange}
-                    className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
                   />
                 </div>
               ))}
@@ -118,7 +118,7 @@ export default function OnboardingPage() {
               name="currency"
               value={form.currency}
               onChange={handleChange}
-              className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-gray-900 border border-gray-800 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
             >
               <option value="MDL">MDL — Leu moldovenesc</option>
               <option value="USD">USD — Dolar american</option>
@@ -129,7 +129,7 @@ export default function OnboardingPage() {
           <button
             type="submit"
             disabled={!isValid}
-            className="w-full bg-lime-400 text-gray-950 font-semibold rounded-lg py-3 text-sm transition-opacity disabled:opacity-40 hover:opacity-90"
+            className="w-full bg-[#2b6777] text-white font-semibold rounded-lg py-3 text-sm transition-opacity disabled:opacity-40 hover:opacity-90"
           >
             Începe →
           </button>

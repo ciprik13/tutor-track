@@ -64,7 +64,7 @@ export default function StudentModal({ student, onClose }: Props) {
               value={form.name}
               onChange={handleChange}
               placeholder="ex. Alexandru Ciobanu"
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
             />
           </div>
 
@@ -76,7 +76,7 @@ export default function StudentModal({ student, onClose }: Props) {
                 value={form.subject}
                 onChange={handleChange}
                 placeholder="ex. Matematică"
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
             <div>
@@ -86,7 +86,7 @@ export default function StudentModal({ student, onClose }: Props) {
                 value={form.grade}
                 onChange={handleChange}
                 placeholder="ex. clasa 9"
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function StudentModal({ student, onClose }: Props) {
               value={form.phone}
               onChange={handleChange}
               placeholder="ex. +373 69 000 000"
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
             />
           </div>
 
@@ -109,7 +109,7 @@ export default function StudentModal({ student, onClose }: Props) {
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value="active">Activ</option>
                 <option value="inactive">Inactiv</option>
@@ -137,7 +137,7 @@ export default function StudentModal({ student, onClose }: Props) {
               onChange={handleChange}
               rows={2}
               placeholder="Observații opționale..."
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors resize-none"
             />
           </div>
 
@@ -152,7 +152,7 @@ export default function StudentModal({ student, onClose }: Props) {
             <button
               type="submit"
               disabled={!isValid}
-              className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
+              className="flex-1 bg-[#2b6777] text-white font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
             >
               {student ? 'Salvează' : 'Adaugă'}
             </button>

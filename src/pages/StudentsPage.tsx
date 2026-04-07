@@ -46,7 +46,7 @@ export default function StudentsPage() {
           </div>
           <button
             onClick={handleAdd}
-            className="bg-lime-400 text-gray-950 font-semibold rounded-lg px-4 py-2 text-sm hover:opacity-90 transition-opacity"
+            className="bg-[#2b6777] text-white font-semibold rounded-lg px-4 py-2 text-sm hover:opacity-90 transition-opacity"
           >
             + Adaugă student
           </button>
@@ -57,7 +57,7 @@ export default function StudentsPage() {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Caută după nume..."
-            className="flex-1 bg-(--bg-card) border border-(--border) rounded-lg px-4 py-2 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+            className="flex-1 bg-(--bg-card) border border-(--border) rounded-lg px-4 py-2 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-[#2b6777] transition-colors"
           />
           <div className="flex gap-2">
             {(['all', 'active', 'inactive'] as const).map(s => (
@@ -66,7 +66,7 @@ export default function StudentsPage() {
                 onClick={() => setStatusFilter(s)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   statusFilter === s
-                    ? 'bg-lime-400 text-gray-950'
+                    ? 'bg-[#2b6777] text-white'
                     : 'bg-(--bg-card) text-gray-400 border border-(--border) hover:border-gray-600'
                 }`}
               >
@@ -81,7 +81,7 @@ export default function StudentsPage() {
         ) : students.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-(--text-3) text-sm">Niciun student găsit</p>
-            <button onClick={handleAdd} className="mt-4 text-lime-400 text-sm hover:underline">
+            <button onClick={handleAdd} className="mt-4 text-[#52ab98] text-sm hover:underline">
               Adaugă primul student →
             </button>
           </div>
@@ -96,7 +96,7 @@ export default function StudentsPage() {
                   className="flex items-center gap-4 flex-1 cursor-pointer"
                   onClick={() => navigate(`/students/${student.id}`)}
                 >
-                  <div className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-lime-400">
+                  <div className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-[#52ab98]">
                     {getInitials(student.name)}
                   </div>
                   <div>
@@ -106,7 +106,7 @@ export default function StudentsPage() {
                     </p>
                   </div>
                   {student.priority && (
-                    <span className="ml-2 text-xs bg-amber-400/10 text-amber-400 px-2 py-0.5 rounded-full">
+                    <span className="ml-2 text-xs bg-[#c07a20]/10 text-[#c07a20] px-2 py-0.5 rounded-full">
                       Prioritar
                     </span>
                   )}
@@ -115,7 +115,7 @@ export default function StudentsPage() {
                 <div className="flex items-center gap-3">
                   <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                     student.status === 'active'
-                      ? 'bg-lime-400/10 text-lime-400'
+                      ? 'bg-[#2b6777]/10 text-[#52ab98]'
                       : 'bg-(--bg-input) text-(--text-2)'
                   }`}>
                     {student.status === 'active' ? 'Activ' : 'Inactiv'}
