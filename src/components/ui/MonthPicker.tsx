@@ -28,12 +28,12 @@ export default function MonthPicker({ value, onChange, label }: Props) {
     : 'Selectează luna'
 
   const c = {
-    bg: isDark ? '#17171f' : '#ffffff',
-    bg2: isDark ? '#1a1a24' : '#f0eeea',
-    bg3: isDark ? '#1e1e27' : '#e8e5e0',
-    border: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
-    text1: isDark ? '#f0f0f2' : '#18181c',
-    text2: isDark ? '#8e8e9e' : '#6a6a7a',
+    bg: 'var(--bg-card)',
+    bg2: 'var(--bg-input)',
+    bg3: 'var(--bg-card-hover)',
+    border: 'var(--border)',
+    text1: 'var(--text-1)',
+    text2: 'var(--text-2)',
   }
 
   const openPicker = () => {
@@ -111,8 +111,8 @@ export default function MonthPicker({ value, onChange, label }: Props) {
               onClick={() => handleSelect(i)}
               style={{
                 padding: '9px 4px', borderRadius: '8px', border: 'none',
-                background: isSelected ? '#52ab98' : isCurrentMonth ? c.bg3 : c.bg2,
-                color: isSelected ? '#0a0a0f' : isCurrentMonth ? '#52ab98' : c.text1,
+                background: isSelected ? 'var(--accent)' : isCurrentMonth ? c.bg3 : c.bg2,
+                color: isSelected ? '#ffffff' : isCurrentMonth ? 'var(--accent)' : c.text1,
                 fontSize: '12px', fontWeight: isSelected ? 600 : 400,
                 cursor: 'pointer', transition: 'all 0.12s',
               }}
@@ -139,7 +139,7 @@ export default function MonthPicker({ value, onChange, label }: Props) {
         onMouseDown={e => { e.stopPropagation(); openPicker() }}
         style={{
           display:'flex', alignItems:'center', justifyContent:'space-between',
-          background: c.bg2, border:`1px solid ${open ? '#52ab98' : c.border}`,
+          background: c.bg2, border:`1px solid ${open ? 'var(--accent)' : c.border}`,
           borderRadius:'8px', padding:'8px 12px', cursor:'pointer',
           fontSize:'13px', color: c.text1, minHeight:'40px',
           transition: 'border-color 0.15s', gap: '8px',

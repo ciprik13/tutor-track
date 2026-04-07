@@ -105,12 +105,12 @@ export default function DatePicker({ value, onChange, includeTime = false, label
   const timeSlots = getTimeSlots()
 
   const c = {
-    bg: isDark ? '#17171f' : '#ffffff',
-    bg2: isDark ? '#1a1a24' : '#f0eeea',
-    bg3: isDark ? '#1e1e27' : '#e8e5e0',
-    border: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
-    text1: isDark ? '#f0f0f2' : '#18181c',
-    text2: isDark ? '#8e8e9e' : '#6a6a7a',
+    bg: 'var(--bg-card)',
+    bg2: 'var(--bg-input)',
+    bg3: 'var(--bg-card-hover)',
+    border: 'var(--border)',
+    text1: 'var(--text-1)',
+    text2: 'var(--text-2)',
   }
 
   const picker = open ? createPortal(
@@ -167,8 +167,8 @@ export default function DatePicker({ value, onChange, includeTime = false, label
                 onClick={() => handleDayClick(day)}
                 style={{
                   padding:'6px 0', borderRadius:'6px', border:'none',
-                  background: isSelected ? '#52ab98' : 'transparent',
-                  color: isSelected ? '#0a0a0f' : isToday ? '#52ab98' : c.text1,
+                  background: isSelected ? 'var(--accent)' : 'transparent',
+                  color: isSelected ? '#ffffff' : isToday ? 'var(--accent)' : c.text1,
                   fontSize:'12px', cursor:'pointer', fontWeight: isSelected || isToday ? 600 : 400,
                   textAlign:'center', transition:'background 0.1s',
                 }}
@@ -193,8 +193,8 @@ export default function DatePicker({ value, onChange, includeTime = false, label
                   style={{
                     display:'block', width:'100%', padding:'6px 4px',
                     borderRadius:'6px', border:'none', textAlign:'center',
-                    background: isActive ? '#52ab98' : 'transparent',
-                    color: isActive ? '#0a0a0f' : c.text1,
+                    background: isActive ? 'var(--accent)' : 'transparent',
+                    color: isActive ? '#ffffff' : c.text1,
                     fontSize:'12px', cursor:'pointer', fontWeight: isActive ? 600 : 400,
                     marginBottom:'2px', transition:'background 0.1s',
                   }}
@@ -219,7 +219,7 @@ export default function DatePicker({ value, onChange, includeTime = false, label
         onMouseDown={e => { e.stopPropagation(); openPicker() }}
         style={{
           display:'flex', alignItems:'center', justifyContent:'space-between', gap:'8px',
-          background: c.bg2, border:`1px solid ${open ? '#52ab98' : c.border}`,
+          background: c.bg2, border:`1px solid ${open ? 'var(--accent)' : c.border}`,
           borderRadius:'8px', padding:'8px 12px', cursor:'pointer',
           fontSize:'13px', color: c.text1, minHeight:'40px',
           transition: 'border-color 0.15s',
