@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getInitials } from '@/lib/dateUtils'
 import type { RootState } from '@/store'
 import { useStudents } from '@/queries/useStudents'
 import { useLessons } from '@/queries/useLessons'
@@ -214,7 +215,7 @@ export default function DashboardPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-(--bg-input) flex items-center justify-center text-xs font-bold text-lime-400">
-                          {student.name.slice(0, 2).toUpperCase()}
+                          {getInitials(student.name)}
                         </div>
                         <div>
                           <p className="text-(--text-1) text-sm font-medium">{student.name}</p>

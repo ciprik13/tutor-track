@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { getInitials } from '@/lib/dateUtils'
 import { useStudent } from '@/queries/useStudents'
 import { useLessons, useTogglePayment, useDeleteLesson } from '@/queries/useLessons'
 import { usePayments, useDeletePayment } from '@/queries/usePayments'
@@ -66,7 +67,7 @@ export default function StudentDetailPage() {
 
         <div className="flex items-center gap-4 mb-6">
           <div className="w-14 h-14 rounded-xl bg-(--bg-input) flex items-center justify-center text-lg font-bold text-lime-400">
-            {student.name.slice(0, 2).toUpperCase()}
+            {getInitials(student.name)}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3">

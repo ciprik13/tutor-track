@@ -1,128 +1,180 @@
-import { useState } from 'react'
-import { useStudents } from '@/queries/useStudents'
-import { useLessons } from '@/queries/useLessons'
-import { useUpdateLesson } from '@/queries/useLessons'
-import { useSelector } from 'react-redux'
-import type { RootState } from '@/store'
-import { useQueryClient } from '@tanstack/react-query'
+import { useState } from "react";
+import { useStudents } from "@/queries/useStudents";
+import { useLessons } from "@/queries/useLessons";
+import { useUpdateLesson } from "@/queries/useLessons";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ReportsPage() {
-  const [selectedStudentId, setSelectedStudentId] = useState<number | undefined>()
+  const [selectedStudentId, setSelectedStudentId] = useState<
+    number | undefined
+  >();
   const [selectedMonth, setSelectedMonth] = useState(
-    new Date().toISOString().slice(0, 7)
-  )
-  const [copied, setCopied] = useState(false)
+    new Date().toISOString().slice(0, 7),
+  );
+  const [copied, setCopied] = useState(false);
 
-  const profile = useSelector((state: RootState) => state.profile)
-  const { data: students = [] } = useStudents()
-  const queryClient = useQueryClient()
-  const updateLesson = useUpdateLesson()
+  const profile = useSelector((state: RootState) => state.profile);
+  const { data: students = [] } = useStudents();
+  const queryClient = useQueryClient();
+  const updateLesson = useUpdateLesson();
 
   const { data: lessons = [] } = useLessons({
     studentId: selectedStudentId,
     month: selectedMonth,
-    status: 'done',
-  })
+    status: "done",
+  });
 
-  const student = students.find(s => s.id === selectedStudentId)
+  const student = students.find((s) => s.id === selectedStudentId);
 
-  const grouped = lessons.reduce((acc, lesson) => {
-    const key = lesson.durationMinutes
-    if (!acc[key]) acc[key] = []
-    acc[key].push(lesson)
-    return acc
-  }, {} as Record<number, typeof lessons>)
+  const grouped = lessons.reduce(
+    (acc, lesson) => {
+      const key = lesson.durationMinutes;
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(lesson);
+      return acc;
+    },
+    {} as Record<number, typeof lessons>,
+  );
 
-  const monthLabel = new Date(selectedMonth + '-01').toLocaleDateString('ro-RO', {
-    month: 'long', year: 'numeric',
-  })
+  const monthLabel = new Date(selectedMonth + "-01").toLocaleDateString(
+    "ro-RO",
+    {
+      month: "long",
+      year: "numeric",
+    },
+  );
 
   const formatDate = (iso: string) =>
-    new Date(iso).toLocaleDateString('ro-RO', {
-      day: 'numeric', month: 'long',
-    })
+    new Date(iso).toLocaleDateString("ro-RO", {
+      day: "numeric",
+      month: "long",
+    });
 
   const generateReport = () => {
-    if (!student) return ''
+    if (!student) return "";
 
-    let index = 1
-    let lines: string[] = []
+    let index = 1;
+    let lines: string[] = [];
 
-    lines.push(`Salut ${student.name}. Îți trimit orarul lecțiilor de ${student.subject} din luna ${monthLabel}:`)
-    lines.push('')
+    lines.push(
+      `Salut ${student.name}. Îți trimit orarul lecțiilor de ${student.subject} din luna ${monthLabel}:`,
+    );
+    lines.push("");
 
-    lessons.forEach(lesson => {
-      lines.push(`${index++}) ${formatDate(lesson.date)} — ${lesson.durationMinutes} minute`)
-    })
+    lessons.forEach((lesson) => {
+      lines.push(
+        `${index++}) ${formatDate(lesson.date)} — ${lesson.durationMinutes} minute`,
+      );
+    });
 
-    lines.push('')
-    lines.push('💰 Calcul total:')
+    lines.push("");
+    lines.push("💰 Calcul total:");
 
-    let grandTotal = 0
+    let grandTotal = 0;
     Object.entries(grouped).forEach(([dur, items]) => {
-      const subtotal = items.length * Number(dur) / 60 * (items[0].pricePerSession / (Number(dur) / 60))
-      const realSubtotal = items.reduce((s, l) => s + l.pricePerSession, 0)
-      grandTotal += realSubtotal
-      lines.push(`📚 ${items.length} × ${dur} min × ${items[0].pricePerSession} lei = ${realSubtotal} lei`)
-    })
+      const subtotal =
+        ((items.length * Number(dur)) / 60) *
+        (items[0].pricePerSession / (Number(dur) / 60));
+      const realSubtotal = items.reduce((s, l) => s + l.pricePerSession, 0);
+      grandTotal += realSubtotal;
+      lines.push(
+        `📚 ${items.length} × ${dur} min × ${items[0].pricePerSession} lei = ${realSubtotal} lei`,
+      );
+    });
 
-    lines.push('')
-    lines.push(`Total de achitat: ${grandTotal} lei`)
-    lines.push('')
-    lines.push(`ℹ️ Date MIA: 📞 ${profile.phone}  •  📧 ${profile.email}`)
-    lines.push('Dacă ai întrebări, sunt aici. 😊')
+    lines.push("");
+    lines.push(`Total de achitat: ${grandTotal} lei`);
+    lines.push("");
+    lines.push(`ℹ️ Date MIA: 📞 ${profile.phone}  •  📧 ${profile.email}`);
+    lines.push("Dacă ai întrebări, sunt aici. 😊");
 
-    return lines.join('\n')
-  }
+    return lines.join("\n");
+  };
 
-  const report = generateReport()
+  const report = generateReport();
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(report)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(report);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleMarkAllPaid = async () => {
-    const unpaid = lessons.filter(l => l.paymentStatus === 'unpaid')
+    const unpaid = lessons.filter((l) => l.paymentStatus === "unpaid");
     await Promise.all(
-      unpaid.map(l => updateLesson.mutateAsync({ ...l, paymentStatus: 'paid' }))
-    )
-    queryClient.invalidateQueries({ queryKey: ['lessons'] })
-  }
+      unpaid.map((l) =>
+        updateLesson.mutateAsync({ ...l, paymentStatus: "paid" }),
+      ),
+    );
+    queryClient.invalidateQueries({ queryKey: ["lessons"] });
+  };
 
   return (
     <div className="min-h-full p-6">
       <div className="max-w-3xl mx-auto">
-
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">Rapoarte</h1>
-          <p className="text-(--text-2) text-sm mt-1">Generează raport lunar pentru un student</p>
+          <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">
+            Rapoarte
+          </h1>
+          <p className="text-(--text-2) text-sm mt-1">
+            Generează raport lunar pentru un student
+          </p>
         </div>
 
         <div className="flex gap-3 mb-6">
           <select
-            value={selectedStudentId ?? ''}
-            onChange={e => setSelectedStudentId(e.target.value ? Number(e.target.value) : undefined)}
+            value={selectedStudentId ?? ""}
+            onChange={(e) =>
+              setSelectedStudentId(
+                e.target.value ? Number(e.target.value) : undefined,
+              )
+            }
             className="flex-1 bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
           >
             <option value="">Selectează student</option>
-            {students.map(s => (
-              <option key={s.id} value={s.id}>{s.name}</option>
+            {students.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
             ))}
           </select>
 
           <input
             type="month"
             value={selectedMonth}
-            onChange={e => setSelectedMonth(e.target.value)}
+            onChange={(e) => setSelectedMonth(e.target.value)}
             className="bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
           />
         </div>
 
         {!selectedStudentId ? (
-          <div className="text-center py-16">
-            <p className="text-(--text-3) text-sm">Selectează un student pentru a genera raportul</p>
+          <div>
+            <div className="bg-(--bg-card) border-2 border-dashed border-(--border) rounded-xl p-5 mb-4 select-none">
+              <pre className="text-(--text-1) text-sm whitespace-pre-wrap font-sans leading-relaxed">{
+              `Salut [Nume Student]. Îți trimit orarul lecțiilor de [Materie] din luna [Lună] [An]:
+
+              1) [zi] [lună] — [durata] minute
+              2) [zi] [lună] — [durata] minute
+              3) [zi] [lună] — [durata] minute
+
+              💰 Calcul total:
+              📚 [nr] × [durata] min × [preț] lei = [subtotal] lei
+
+              Total de achitat: [total] lei
+
+              ℹ️ Date MIA: 📞 [telefon]  •  📧 [email]
+              Dacă ai întrebări, sunt aici. 😊`
+              }</pre>
+            </div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex-1 h-px bg-(--border)" />
+              <p className="text-(--text-3) text-xs">
+                Selectează un student pentru a genera raportul real
+              </p>
+              <div className="flex-1 h-px bg-(--border)" />
+            </div>
           </div>
         ) : lessons.length === 0 ? (
           <div className="text-center py-16">
@@ -133,7 +185,7 @@ export default function ReportsPage() {
         ) : (
           <>
             <div className="bg-(--bg-card) border border-(--border) rounded-xl p-5 mb-4">
-              <pre className="text-gray-300 text-sm whitespace-pre-wrap font-sans leading-relaxed">
+              <pre className="[color:var(--text-2)] text-sm whitespace-pre-wrap font-sans leading-relaxed">
                 {report}
               </pre>
             </div>
@@ -143,12 +195,12 @@ export default function ReportsPage() {
                 onClick={handleCopy}
                 className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-all"
               >
-                {copied ? '✓ Copiat!' : 'Copiază în clipboard'}
+                {copied ? "✓ Copiat!" : "Copiază în clipboard"}
               </button>
               <button
                 onClick={handleMarkAllPaid}
-                disabled={lessons.every(l => l.paymentStatus === 'paid')}
-                className="flex-1 bg-(--bg-input) text-gray-300 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors disabled:opacity-40"
+                disabled={lessons.every((l) => l.paymentStatus === "paid")}
+                className="flex-1 bg-(--bg-card) [color:var(--text-2)] font-medium rounded-lg py-2.5 text-sm hover:bg-(--bg-card-hover) transition-colors disabled:opacity-40 border border-(--border)"
               >
                 Marchează toate ca achitate
               </button>
@@ -156,11 +208,19 @@ export default function ReportsPage() {
 
             <div className="mt-6 grid grid-cols-3 gap-3">
               {Object.entries(grouped).map(([dur, items]) => (
-                <div key={dur} className="bg-(--bg-card) border border-(--border) rounded-xl p-4">
-                  <p className="text-(--text-2) text-xs uppercase tracking-wider mb-2">{dur} min</p>
-                  <p className="text-(--text-1) font-bold text-xl">{items.length}</p>
+                <div
+                  key={dur}
+                  className="bg-(--bg-card) border border-(--border) rounded-xl p-4"
+                >
+                  <p className="text-(--text-2) text-xs uppercase tracking-wider mb-2">
+                    {dur} min
+                  </p>
+                  <p className="text-(--text-1) font-bold text-xl">
+                    {items.length}
+                  </p>
                   <p className="text-(--text-2) text-xs mt-1">
-                    {items.reduce((s, l) => s + l.pricePerSession, 0)} {profile.currency}
+                    {items.reduce((s, l) => s + l.pricePerSession, 0)}{" "}
+                    {profile.currency}
                   </p>
                 </div>
               ))}
@@ -169,5 +229,5 @@ export default function ReportsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

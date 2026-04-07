@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useStudents } from '@/queries/useStudents'
+import { getInitials } from '@/lib/dateUtils'
 import { useLessons, useUpdateLesson } from '@/queries/useLessons'
 import { useSelector } from 'react-redux'
 import { useQueryClient } from '@tanstack/react-query'
 import type { RootState } from '@/store'
 import { useNavigate } from 'react-router-dom'
+import MonthPicker from '@/components/ui/MonthPicker'
 
 interface MonthSummary {
   studentId: number
@@ -123,11 +125,9 @@ export default function PaymentsPage() {
         </div>
 
         <div className="flex flex-wrap gap-3 mb-6">
-          <input
-            type="month"
+          <MonthPicker
             value={monthFilter}
-            onChange={e => setMonthFilter(e.target.value)}
-            className="bg-(--bg-input) border-(--border) border rounded-lg px-3 py-2 text-sm text-(--text-1) focus:outline-none focus:border-lime-400 transition-colors"
+            onChange={setMonthFilter}
           />
           <div className="flex gap-2">
             {(['all', 'unpaid', 'partial', 'paid'] as const).map(s => (
@@ -164,7 +164,7 @@ export default function PaymentsPage() {
                       className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-lime-500 cursor-pointer hover:opacity-80 transition-opacity"
                       onClick={() => navigate(`/students/${summary.studentId}`)}
                     >
-                      {summary.studentName.slice(0, 2).toUpperCase()}
+                      {getInitials(summary.studentName)}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3">

@@ -3,6 +3,7 @@ import { useLessons, useDeleteLesson, useTogglePayment } from '@/queries/useLess
 import { useStudents } from '@/queries/useStudents'
 import LessonModal from '@/components/lessons/LessonModal'
 import type { Lesson } from '@/types'
+import MonthPicker from '@/components/ui/MonthPicker'
 
 export default function LessonsPage() {
   const [studentFilter, setStudentFilter] = useState<number | undefined>()
@@ -81,11 +82,9 @@ export default function LessonsPage() {
             ))}
           </select>
 
-          <input
-            type="month"
+          <MonthPicker
             value={monthFilter}
-            onChange={e => setMonthFilter(e.target.value)}
-            className="bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2 text-sm text-(--text-1) focus:outline-none focus:border-lime-400 transition-colors"
+            onChange={setMonthFilter}
           />
 
           <div className="flex gap-2">

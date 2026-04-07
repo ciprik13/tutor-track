@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getInitials } from '@/lib/dateUtils'
 import { useStudents, useDeleteStudent } from '@/queries/useStudents'
 import StudentModal from '@/components/students/StudentModal'
 import type { Student } from '@/types'
@@ -96,7 +97,7 @@ export default function StudentsPage() {
                   onClick={() => navigate(`/students/${student.id}`)}
                 >
                   <div className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-lime-400">
-                    {student.name.slice(0, 2).toUpperCase()}
+                    {getInitials(student.name)}
                   </div>
                   <div>
                     <p className="text-(--text-1) font-medium text-sm">{student.name}</p>
