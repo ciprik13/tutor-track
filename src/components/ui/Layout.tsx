@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { toggleSidebar } from '@/store/slices/uiSlice'
+import { toggleSidebar, toggleTheme } from '@/store/slices/uiSlice'
 import type { RootState, AppDispatch } from '@/store'
 
 const navItems = [
@@ -99,43 +99,68 @@ export default function Layout({ children }: Props) {
       }}>
 
         <div style={{
-          padding: '20px 16px 16px',
-          borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          minHeight: '64px',
-        }}>
-          {sidebarOpen && (
-            <div onClick={() => navigate('/dashboard')} style={{ cursor: 'pointer' }}>
-              <div style={{
-                fontSize: '17px',
-                fontWeight: 700,
-                color: theme === 'dark' ? '#f0f0f2' : '#18181c',
-                letterSpacing: '-0.3px',
-              }}>
-                Tutor<span style={{ color: '#c8fb57' }}>Track</span>
-              </div>
-            </div>
-          )}
-          <button
-            onClick={() => dispatch(toggleSidebar())}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: theme === 'dark' ? '#5a5a6a' : '#9a9aaa',
-              padding: '4px',
-              borderRadius: '6px',
-              display: 'flex',
-              alignItems: 'center',
-              marginLeft: sidebarOpen ? 'auto' : '0',
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M3 4h10M3 8h10M3 12h10"/>
-            </svg>
-          </button>
+            padding: '20px 16px 16px',
+            borderBottom: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            minHeight: '64px',
+            gap: '8px',
+            }}>
+            {sidebarOpen && (
+                <div onClick={() => navigate('/dashboard')} style={{ cursor: 'pointer', flex: 1 }}>
+                <div style={{
+                    fontSize: '17px',
+                    fontWeight: 700,
+                    color: theme === 'dark' ? '#f0f0f2' : '#18181c',
+                    letterSpacing: '-0.3px',
+                }}>
+                    Tutor<span style={{ color: '#c8fb57' }}>Track</span>
+                </div>
+                </div>
+            )}
+            <button
+                onClick={() => dispatch(toggleTheme())}
+                title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+                style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: theme === 'dark' ? '#5a5a6a' : '#9a9aaa',
+                padding: '4px',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                }}
+            >
+                {theme === 'dark' ? (
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="8" cy="8" r="3"/>
+                    <path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.2 3.2l1 1M11.8 11.8l1 1M11.8 3.2l-1 1M3.2 11.8l1-1"/>
+                </svg>
+                ) : (
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M13.5 10A6 6 0 0 1 6 2.5a6 6 0 1 0 7.5 7.5z"/>
+                </svg>
+                )}
+            </button>
+            <button
+                onClick={() => dispatch(toggleSidebar())}
+                style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: theme === 'dark' ? '#5a5a6a' : '#9a9aaa',
+                padding: '4px',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                }}
+            >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M3 4h10M3 8h10M3 12h10"/>
+                </svg>
+            </button>
         </div>
 
         <nav style={{ padding: '12px 8px', flex: 1 }}>
