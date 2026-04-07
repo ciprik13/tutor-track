@@ -84,17 +84,17 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 p-6">
+    <div className="min-h-full p-6">
       <div className="max-w-2xl mx-auto">
 
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-tight">Setări</h1>
-          <p className="text-gray-500 text-sm mt-1">Gestionează profilul și preferințele</p>
+          <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">Setări</h1>
+          <p className="text-(--text-2) text-sm mt-1">Gestionează profilul și preferințele</p>
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <h2 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+          <div className="bg-(--bg-card) border border-(--border) rounded-xl p-5">
+            <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
               Profil tutor
             </h2>
             <div className="space-y-4">
@@ -104,7 +104,7 @@ export default function SettingsPage() {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                  className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -115,7 +115,7 @@ export default function SettingsPage() {
                     type="email"
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
                   />
                 </div>
                 <div>
@@ -124,15 +124,15 @@ export default function SettingsPage() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <h2 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+          <div className="bg-(--bg-card) border border-(--border) rounded-xl p-5">
+            <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
               Prețuri implicite
             </h2>
             <div className="grid grid-cols-3 gap-3">
@@ -144,7 +144,7 @@ export default function SettingsPage() {
                     type="number"
                     value={form[`defaultPrice${min}` as keyof typeof form]}
                     onChange={handleChange}
-                    className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
                   />
                 </div>
               ))}
@@ -155,7 +155,7 @@ export default function SettingsPage() {
                 name="currency"
                 value={form.currency}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="MDL">MDL — Leu moldovenesc</option>
                 <option value="USD">USD — Dolar american</option>
@@ -172,14 +172,14 @@ export default function SettingsPage() {
           </button>
         </form>
 
-        <div className="mt-6 bg-gray-900 border border-gray-800 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+        <div className="mt-6 bg-(--bg-card) border border-(--border) rounded-xl p-5">
+          <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
             Aspect
           </h2>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-white text-sm font-medium">Temă {theme === 'dark' ? 'întunecată' : 'luminoasă'}</p>
-              <p className="text-gray-500 text-xs mt-0.5">Comută între light și dark mode</p>
+              <p className="text-(--text-1) text-sm font-medium">Temă {theme === 'dark' ? 'întunecată' : 'luminoasă'}</p>
+              <p className="text-(--text-2) text-xs mt-0.5">Comută între light și dark mode</p>
             </div>
             <button
               onClick={() => dispatch(toggleTheme())}
@@ -194,30 +194,30 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="mt-6 bg-gray-900 border border-gray-800 rounded-xl p-5">
-          <h2 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">
+        <div className="mt-6 bg-(--bg-card) border border-(--border) rounded-xl p-5">
+          <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
             Date
           </h2>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-white text-sm font-medium">Export backup</p>
-                <p className="text-gray-500 text-xs mt-0.5">Descarcă toate datele ca JSON</p>
+                <p className="text-(--text-1) text-sm font-medium">Export backup</p>
+                <p className="text-(--text-2) text-xs mt-0.5">Descarcă toate datele ca JSON</p>
               </div>
               <button
                 onClick={handleExport}
-                className="bg-gray-800 text-gray-300 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-700 transition-colors"
+                className="bg-(--bg-input) text-gray-300 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-700 transition-colors"
               >
                 Exportă
               </button>
             </div>
-            <div className="w-full h-px bg-gray-800" />
+            <div className="w-full h-px bg-(--bg-input)" />
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-white text-sm font-medium">Import backup</p>
-                <p className="text-gray-500 text-xs mt-0.5">Restaurează din fișier JSON</p>
+                <p className="text-(--text-1) text-sm font-medium">Import backup</p>
+                <p className="text-(--text-2) text-xs mt-0.5">Restaurează din fișier JSON</p>
               </div>
-              <label className="bg-gray-800 text-gray-300 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-700 transition-colors cursor-pointer">
+              <label className="bg-(--bg-input) text-gray-300 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-700 transition-colors cursor-pointer">
                 Importă
                 <input type="file" accept=".json" onChange={handleImport} className="hidden" />
               </label>
@@ -231,8 +231,8 @@ export default function SettingsPage() {
           </h2>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-white text-sm font-medium">Șterge toate datele</p>
-              <p className="text-gray-500 text-xs mt-0.5">Acțiune ireversibilă — șterge tot</p>
+              <p className="text-(--text-1) text-sm font-medium">Șterge toate datele</p>
+              <p className="text-(--text-2) text-xs mt-0.5">Acțiune ireversibilă — șterge tot</p>
             </div>
             <button
               onClick={handleClearAll}
