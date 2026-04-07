@@ -46,12 +46,12 @@ export default function StudentModal({ student, onClose }: Props) {
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-2xl w-full max-w-md p-6">
+      <div className="bg-(--bg-card) border border-(--border) rounded-2xl w-full max-w-md p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="[color:var(--text-1)] font-bold text-lg">
+          <h2 className="text-(--text-1) font-bold text-lg">
             {student ? 'Editează student' : 'Student nou'}
           </h2>
-          <button onClick={onClose} className="[color:var(--text-3)] hover:[color:var(--text-1)] transition-colors text-xl leading-none">
+          <button onClick={onClose} className="text-(--text-3) hover:text-(--text-1) transition-colors text-xl leading-none">
             ×
           </button>
         </div>
@@ -64,7 +64,7 @@ export default function StudentModal({ student, onClose }: Props) {
               value={form.name}
               onChange={handleChange}
               placeholder="ex. Alexandru Ciobanu"
-              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
             />
           </div>
 
@@ -76,7 +76,7 @@ export default function StudentModal({ student, onClose }: Props) {
                 value={form.subject}
                 onChange={handleChange}
                 placeholder="ex. Matematică"
-                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
             <div>
@@ -86,7 +86,7 @@ export default function StudentModal({ student, onClose }: Props) {
                 value={form.grade}
                 onChange={handleChange}
                 placeholder="ex. clasa 9"
-                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function StudentModal({ student, onClose }: Props) {
               value={form.phone}
               onChange={handleChange}
               placeholder="ex. +373 69 000 000"
-              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
             />
           </div>
 
@@ -109,7 +109,7 @@ export default function StudentModal({ student, onClose }: Props) {
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="active">Activ</option>
                 <option value="inactive">Inactiv</option>
@@ -137,7 +137,7 @@ export default function StudentModal({ student, onClose }: Props) {
               onChange={handleChange}
               rows={2}
               placeholder="Observații opționale..."
-              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
             />
           </div>
 
@@ -145,7 +145,7 @@ export default function StudentModal({ student, onClose }: Props) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 [background:var(--bg-input)] text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
+              className="flex-1 bg-(--bg-input) text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
             >
               Anulează
             </button>

@@ -43,13 +43,13 @@ export default function StudentDetailPage() {
 
   if (isLoading) return (
     <div className="min-h-full flex items-center justify-center">
-      <p className="[color:var(--text-2)] text-sm">Se încarcă...</p>
+      <p className="text-(--text-2) text-sm">Se încarcă...</p>
     </div>
   )
 
   if (!student) return (
     <div className="min-h-full flex items-center justify-center">
-      <p className="[color:var(--text-2)] text-sm">Studentul nu a fost găsit.</p>
+      <p className="text-(--text-2) text-sm">Studentul nu a fost găsit.</p>
     </div>
   )
 
@@ -59,28 +59,28 @@ export default function StudentDetailPage() {
 
         <button
           onClick={() => navigate('/students')}
-          className="[color:var(--text-2)] hover:[color:var(--text-1)] text-sm mb-6 flex items-center gap-1 transition-colors"
+          className="text-(--text-2) hover:text-(--text-1) text-sm mb-6 flex items-center gap-1 transition-colors"
         >
           ← Înapoi la studenți
         </button>
 
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-14 h-14 rounded-xl [background:var(--bg-input)] flex items-center justify-center text-lg font-bold text-lime-400">
+          <div className="w-14 h-14 rounded-xl bg-(--bg-input) flex items-center justify-center text-lg font-bold text-lime-400">
             {student.name.slice(0, 2).toUpperCase()}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold [color:var(--text-1)] tracking-tight">{student.name}</h1>
+              <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">{student.name}</h1>
               {student.priority && (
                 <span className="text-xs bg-amber-400/10 text-amber-400 px-2 py-0.5 rounded-full">Prioritar</span>
               )}
               <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
-                student.status === 'active' ? 'bg-lime-400/10 text-lime-400' : '[background:var(--bg-input)] [color:var(--text-2)]'
+                student.status === 'active' ? 'bg-lime-400/10 text-lime-400' : 'bg-(--bg-input) text-(--text-2)'
               }`}>
                 {student.status === 'active' ? 'Activ' : 'Inactiv'}
               </span>
             </div>
-            <p className="[color:var(--text-2)] text-sm mt-1">
+            <p className="text-(--text-2) text-sm mt-1">
               {student.subject} · {student.grade}
               {student.phone && ` · ${student.phone}`}
             </p>
@@ -91,14 +91,14 @@ export default function StudentDetailPage() {
           <div className="bg-amber-400/10 border border-amber-400/20 rounded-xl p-4 mb-6 flex items-center justify-between">
             <div>
               <p className="text-amber-400 text-xs font-medium uppercase tracking-wider">Lecții neachitate</p>
-              <p className="[color:var(--text-1)] font-bold text-lg mt-1">
+              <p className="text-(--text-1) font-bold text-lg mt-1">
                 {unpaidLessons.length} lecții · {unpaidTotal} MDL
               </p>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => { setEditPayment(null); setPaymentModal(true) }}
-                className="text-xs [background:var(--bg-input)] text-gray-300 font-medium px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+                className="text-xs bg-(--bg-input) text-gray-300 font-medium px-3 py-2 rounded-lg hover:bg-gray-700 transition-colors"
               >
                 Înregistrează plată
               </button>
@@ -112,13 +112,13 @@ export default function StudentDetailPage() {
           </div>
         )}
 
-        <div className="flex gap-1 mb-6 [background:var(--bg-card)] p-1 rounded-xl w-fit">
+        <div className="flex gap-1 mb-6 bg-(--bg-card) p-1 rounded-xl w-fit">
           {(['lessons', 'payments', 'report'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === tab ? 'bg-lime-400 text-gray-950' : '[color:var(--text-2)] hover:[color:var(--text-1)]'
+                activeTab === tab ? 'bg-lime-400 text-gray-950' : 'text-(--text-2) hover:text-(--text-1)'
               }`}
             >
               {tab === 'lessons' ? `Lecții (${lessons.length})` : tab === 'payments' ? `Plăți (${payments.length})` : 'Raport'}
@@ -137,20 +137,20 @@ export default function StudentDetailPage() {
               </button>
             </div>
             {lessons.length === 0 ? (
-              <p className="[color:var(--text-3)] text-sm text-center py-8">Nicio lecție înregistrată</p>
+              <p className="text-(--text-3) text-sm text-center py-8">Nicio lecție înregistrată</p>
             ) : (
               <div className="grid gap-3">
                 {lessons.map(lesson => (
-                  <div key={lesson.id} className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 flex items-center justify-between hover:[border-color:var(--border)] transition-colors">
+                  <div key={lesson.id} className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex items-center justify-between hover:border-(--border) transition-colors">
                     <div className="flex items-center gap-4">
                       <div className="text-center min-w-[40px]">
-                        <p className="[color:var(--text-1)] font-bold text-lg leading-none">{new Date(lesson.date).getDate()}</p>
-                        <p className="[color:var(--text-2)] text-xs">{new Date(lesson.date).toLocaleDateString('ro-RO', { month: 'short' })}</p>
+                        <p className="text-(--text-1) font-bold text-lg leading-none">{new Date(lesson.date).getDate()}</p>
+                        <p className="text-(--text-2) text-xs">{new Date(lesson.date).toLocaleDateString('ro-RO', { month: 'short' })}</p>
                       </div>
-                      <div className="w-px h-8 [background:var(--bg-input)]" />
+                      <div className="w-px h-8 bg-(--bg-input)" />
                       <div>
-                        <p className="[color:var(--text-1)] text-sm font-medium">{formatDate(lesson.date)}</p>
-                        <p className="[color:var(--text-2)] text-xs mt-0.5">{lesson.durationMinutes} min · {lesson.pricePerSession} MDL</p>
+                        <p className="text-(--text-1) text-sm font-medium">{formatDate(lesson.date)}</p>
+                        <p className="text-(--text-2) text-xs mt-0.5">{lesson.durationMinutes} min · {lesson.pricePerSession} MDL</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -165,19 +165,19 @@ export default function StudentDetailPage() {
                         {lesson.paymentStatus === 'paid' ? 'Achitat' : 'Neachitat'}
                       </button>
                       <span className={`text-xs px-2 py-1 rounded-full ${
-                        lesson.status === 'done' ? '[background:var(--bg-input)] text-gray-400' : 'bg-red-400/10 text-red-400'
+                        lesson.status === 'done' ? 'bg-(--bg-input) text-gray-400' : 'bg-red-400/10 text-red-400'
                       }`}>
                         {lesson.status === 'done' ? 'Efectuat' : 'Anulat'}
                       </span>
                       <button
                         onClick={() => { setEditLesson(lesson); setLessonModal(true) }}
-                        className="[color:var(--text-3)] hover:[color:var(--text-1)] text-xs px-2 py-1 transition-colors"
+                        className="text-(--text-3) hover:text-(--text-1) text-xs px-2 py-1 transition-colors"
                       >
                         Editează
                       </button>
                       <button
                         onClick={() => confirm('Ștergi lecția?') && deleteLesson.mutate(lesson.id!)}
-                        className="[color:var(--text-3)] hover:text-red-400 text-xs px-2 py-1 transition-colors"
+                        className="text-(--text-3) hover:text-red-400 text-xs px-2 py-1 transition-colors"
                       >
                         Șterge
                       </button>
@@ -200,17 +200,17 @@ export default function StudentDetailPage() {
               </button>
             </div>
             {payments.length === 0 ? (
-              <p className="[color:var(--text-3)] text-sm text-center py-8">Nicio plată înregistrată</p>
+              <p className="text-(--text-3) text-sm text-center py-8">Nicio plată înregistrată</p>
             ) : (
               <div className="grid gap-3">
                 {payments.map(payment => (
-                  <div key={payment.id} className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 flex items-center justify-between hover:[border-color:var(--border)] transition-colors">
+                  <div key={payment.id} className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex items-center justify-between hover:border-(--border) transition-colors">
                     <div>
-                      <p className="[color:var(--text-1)] font-medium text-sm">{payment.period}</p>
-                      <p className="[color:var(--text-2)] text-xs mt-0.5">{formatDate(payment.date)}</p>
+                      <p className="text-(--text-1) font-medium text-sm">{payment.period}</p>
+                      <p className="text-(--text-2) text-xs mt-0.5">{formatDate(payment.date)}</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <p className="[color:var(--text-1)] font-bold">{payment.amount} {payment.currency}</p>
+                      <p className="text-(--text-1) font-bold">{payment.amount} {payment.currency}</p>
                       <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                         payment.status === 'paid' ? 'bg-lime-400/10 text-lime-400'
                         : payment.status === 'partial' ? 'bg-amber-400/10 text-amber-400'
@@ -220,13 +220,13 @@ export default function StudentDetailPage() {
                       </span>
                       <button
                         onClick={() => { setEditPayment(payment); setPaymentModal(true) }}
-                        className="[color:var(--text-3)] hover:[color:var(--text-1)] text-xs px-2 py-1 transition-colors"
+                        className="text-(--text-3) hover:text-(--text-1) text-xs px-2 py-1 transition-colors"
                       >
                         Editează
                       </button>
                       <button
                         onClick={() => confirm('Ștergi plata?') && deletePayment.mutate(payment.id!)}
-                        className="[color:var(--text-3)] hover:text-red-400 text-xs px-2 py-1 transition-colors"
+                        className="text-(--text-3) hover:text-red-400 text-xs px-2 py-1 transition-colors"
                       >
                         Șterge
                       </button>
@@ -239,7 +239,7 @@ export default function StudentDetailPage() {
         )}
 
         {activeTab === 'report' && (
-          <div className="[color:var(--text-2)] text-sm py-8 text-center">
+          <div className="text-(--text-2) text-sm py-8 text-center">
             <p>Mergi la pagina <span className="text-lime-400 cursor-pointer" onClick={() => navigate('/reports')}>Rapoarte</span> pentru a genera raportul lunar</p>
           </div>
         )}
