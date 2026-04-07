@@ -95,6 +95,16 @@ const navItems = [
     ),
   },
   {
+    path: '/statistics',
+    label: 'Statistici',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M1 12l4-4 3 3 4-5 3 3"/>
+        <path d="M1 15h14"/>
+      </svg>
+    ),
+  },
+  {
     path: "/settings",
     label: "Setări",
     icon: (
