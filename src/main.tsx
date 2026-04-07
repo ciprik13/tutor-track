@@ -17,6 +17,7 @@ const queryClient = new QueryClient({
 
 const savedTheme = localStorage.getItem('theme') ?? 'dark'
 document.documentElement.setAttribute('data-theme', savedTheme)
+document.body.style.background = savedTheme === 'dark' ? '#0a0a0f' : '#f5f4f0'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
