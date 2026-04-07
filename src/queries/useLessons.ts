@@ -11,7 +11,8 @@ export function useLessons(filters?: {
   return useQuery({
     queryKey: ['lessons', filters],
     queryFn: async () => {
-      let lessons = await db.lessons.orderBy('date').reverse().toArray()
+      let lessons = await db.lessons.toArray()
+      lessons.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       if (filters?.studentId) {
         lessons = lessons.filter(l => l.studentId === filters.studentId)
       }

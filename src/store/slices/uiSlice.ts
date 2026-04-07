@@ -17,10 +17,12 @@ const uiSlice = createSlice({
     toggleTheme: (state) => {
       state.theme = state.theme === 'light' ? 'dark' : 'light'
       localStorage.setItem('theme', state.theme)
+      document.documentElement.setAttribute('data-theme', state.theme)
     },
     setTheme: (state, action: PayloadAction<'light' | 'dark'>) => {
       state.theme = action.payload
       localStorage.setItem('theme', state.theme)
+      document.documentElement.setAttribute('data-theme', action.payload)
     },
     toggleSidebar: (state) => {
       state.sidebarOpen = !state.sidebarOpen
