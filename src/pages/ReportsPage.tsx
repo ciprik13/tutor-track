@@ -92,19 +92,19 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 p-6">
+    <div className="min-h-full p-6">
       <div className="max-w-3xl mx-auto">
 
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white tracking-tight">Rapoarte</h1>
-          <p className="text-gray-500 text-sm mt-1">Generează raport lunar pentru un student</p>
+          <h1 className="text-2xl font-bold [color:var(--text-1)] tracking-tight">Rapoarte</h1>
+          <p className="[color:var(--text-2)] text-sm mt-1">Generează raport lunar pentru un student</p>
         </div>
 
         <div className="flex gap-3 mb-6">
           <select
             value={selectedStudentId ?? ''}
             onChange={e => setSelectedStudentId(e.target.value ? Number(e.target.value) : undefined)}
-            className="flex-1 bg-gray-900 border border-gray-800 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+            className="flex-1 [background:var(--bg-card)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
           >
             <option value="">Selectează student</option>
             {students.map(s => (
@@ -116,23 +116,23 @@ export default function ReportsPage() {
             type="month"
             value={selectedMonth}
             onChange={e => setSelectedMonth(e.target.value)}
-            className="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
           />
         </div>
 
         {!selectedStudentId ? (
           <div className="text-center py-16">
-            <p className="text-gray-600 text-sm">Selectează un student pentru a genera raportul</p>
+            <p className="[color:var(--text-3)] text-sm">Selectează un student pentru a genera raportul</p>
           </div>
         ) : lessons.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-600 text-sm">
+            <p className="[color:var(--text-3)] text-sm">
               Nicio lecție efectuată în {monthLabel} pentru {student?.name}
             </p>
           </div>
         ) : (
           <>
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 mb-4">
+            <div className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-5 mb-4">
               <pre className="text-gray-300 text-sm whitespace-pre-wrap font-sans leading-relaxed">
                 {report}
               </pre>
@@ -148,7 +148,7 @@ export default function ReportsPage() {
               <button
                 onClick={handleMarkAllPaid}
                 disabled={lessons.every(l => l.paymentStatus === 'paid')}
-                className="flex-1 bg-gray-800 text-gray-300 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors disabled:opacity-40"
+                className="flex-1 [background:var(--bg-input)] text-gray-300 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors disabled:opacity-40"
               >
                 Marchează toate ca achitate
               </button>
@@ -156,10 +156,10 @@ export default function ReportsPage() {
 
             <div className="mt-6 grid grid-cols-3 gap-3">
               {Object.entries(grouped).map(([dur, items]) => (
-                <div key={dur} className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">{dur} min</p>
-                  <p className="text-white font-bold text-xl">{items.length}</p>
-                  <p className="text-gray-500 text-xs mt-1">
+                <div key={dur} className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4">
+                  <p className="[color:var(--text-2)] text-xs uppercase tracking-wider mb-2">{dur} min</p>
+                  <p className="[color:var(--text-1)] font-bold text-xl">{items.length}</p>
+                  <p className="[color:var(--text-2)] text-xs mt-1">
                     {items.reduce((s, l) => s + l.pricePerSession, 0)} {profile.currency}
                   </p>
                 </div>

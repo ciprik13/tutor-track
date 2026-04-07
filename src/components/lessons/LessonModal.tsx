@@ -69,14 +69,14 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md p-6">
+      <div className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-2xl w-full max-w-md p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-white font-bold text-lg">
+          <h2 className="[color:var(--text-1)] font-bold text-lg">
             {lesson ? 'Editează lecție' : 'Lecție nouă'}
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-600 hover:text-white transition-colors text-xl leading-none"
+            className="[color:var(--text-3)] hover:[color:var(--text-1)] transition-colors text-xl leading-none"
           >
             ×
           </button>
@@ -89,7 +89,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
               name="studentId"
               value={form.studentId}
               onChange={handleChange}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
             >
               {students.map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -104,7 +104,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
               type="datetime-local"
               value={form.date}
               onChange={handleChange}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
             />
           </div>
 
@@ -115,7 +115,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
                 name="durationMinutes"
                 value={form.durationMinutes}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value={60}>60 min</option>
                 <option value={90}>90 min</option>
@@ -129,7 +129,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
                 type="number"
                 value={form.pricePerSession}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
           </div>
@@ -141,7 +141,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="done">Efectuat</option>
                 <option value="cancelled">Anulat</option>
@@ -153,7 +153,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
                 name="paymentStatus"
                 value={form.paymentStatus}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="unpaid">Neachitat</option>
                 <option value="paid">Achitat</option>
@@ -169,7 +169,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
               onChange={handleChange}
               rows={2}
               placeholder="Observații opționale..."
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
             />
           </div>
 
@@ -177,7 +177,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-800 text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
+              className="flex-1 [background:var(--bg-input)] text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
             >
               Anulează
             </button>

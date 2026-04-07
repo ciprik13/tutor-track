@@ -53,13 +53,13 @@ export default function LessonsPage() {
     })
 
   return (
-    <div className="min-h-screen bg-gray-950 p-6">
+    <div className="min-h-full p-6">
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">Lecții</h1>
-            <p className="text-gray-500 text-sm mt-1">{lessons.length} lecții</p>
+            <h1 className="text-2xl font-bold [color:var(--text-1)] tracking-tight">Lecții</h1>
+            <p className="[color:var(--text-2)] text-sm mt-1">{lessons.length} lecții</p>
           </div>
           <button
             onClick={handleAdd}
@@ -73,7 +73,7 @@ export default function LessonsPage() {
           <select
             value={studentFilter ?? ''}
             onChange={e => setStudentFilter(e.target.value ? Number(e.target.value) : undefined)}
-            className="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-lime-400 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-lg px-3 py-2 text-sm [color:var(--text-1)] focus:outline-none focus:border-lime-400 transition-colors"
           >
             <option value="">Toți studenții</option>
             {students.map(s => (
@@ -85,7 +85,7 @@ export default function LessonsPage() {
             type="month"
             value={monthFilter}
             onChange={e => setMonthFilter(e.target.value)}
-            className="bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-lime-400 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-lg px-3 py-2 text-sm [color:var(--text-1)] focus:outline-none focus:border-lime-400 transition-colors"
           />
 
           <div className="flex gap-2">
@@ -96,7 +96,7 @@ export default function LessonsPage() {
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   paymentFilter === p
                     ? 'bg-lime-400 text-gray-950'
-                    : 'bg-gray-900 text-gray-400 border border-gray-800 hover:border-gray-600'
+                    : '[background:var(--bg-card)] text-gray-400 border [border-color:var(--border)] hover:border-gray-600'
                 }`}
               >
                 {p === undefined ? 'Toate' : p === 'paid' ? 'Achitate' : 'Neachitate'}
@@ -106,10 +106,10 @@ export default function LessonsPage() {
         </div>
 
         {isLoading ? (
-          <p className="text-gray-500 text-sm">Se încarcă...</p>
+          <p className="[color:var(--text-2)] text-sm">Se încarcă...</p>
         ) : lessons.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-600 text-sm">Nicio lecție găsită</p>
+            <p className="[color:var(--text-3)] text-sm">Nicio lecție găsită</p>
             <button onClick={handleAdd} className="mt-4 text-lime-400 text-sm hover:underline">
               Adaugă prima lecție →
             </button>
@@ -119,27 +119,27 @@ export default function LessonsPage() {
             {lessons.map(lesson => (
               <div
                 key={lesson.id}
-                className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center justify-between hover:border-gray-700 transition-colors"
+                className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 flex items-center justify-between hover:[border-color:var(--border)] transition-colors"
               >
                 <div className="flex items-center gap-4 flex-1">
                   <div className="text-center min-w-12">
-                    <p className="text-white font-bold text-lg leading-none">
+                    <p className="[color:var(--text-1)] font-bold text-lg leading-none">
                       {new Date(lesson.date).getDate()}
                     </p>
-                    <p className="text-gray-500 text-xs mt-0.5">
+                    <p className="[color:var(--text-2)] text-xs mt-0.5">
                       {new Date(lesson.date).toLocaleDateString('ro-RO', { month: 'short' })}
                     </p>
                   </div>
 
-                  <div className="w-px h-10 bg-gray-800" />
+                  <div className="w-px h-10 [background:var(--bg-input)]" />
 
                   <div className="flex-1">
-                    <p className="text-white font-medium text-sm">
+                    <p className="[color:var(--text-1)] font-medium text-sm">
                       {getStudentName(lesson.studentId)}
                     </p>
-                    <p className="text-gray-500 text-xs mt-0.5">
+                    <p className="[color:var(--text-2)] text-xs mt-0.5">
                       {formatDate(lesson.date)} · {lesson.durationMinutes} min · {lesson.pricePerSession} {' '}
-                      <span className="text-gray-600">MDL</span>
+                      <span className="[color:var(--text-3)]">MDL</span>
                     </p>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export default function LessonsPage() {
 
                   <span className={`text-xs px-2.5 py-1 rounded-full ${
                     lesson.status === 'done'
-                      ? 'bg-gray-800 text-gray-400'
+                      ? '[background:var(--bg-input)] text-gray-400'
                       : 'bg-red-400/10 text-red-400'
                   }`}>
                     {lesson.status === 'done' ? 'Efectuat' : 'Anulat'}
@@ -166,13 +166,13 @@ export default function LessonsPage() {
 
                   <button
                     onClick={() => handleEdit(lesson)}
-                    className="text-gray-600 hover:text-white text-xs transition-colors px-2 py-1"
+                    className="[color:var(--text-3)] hover:[color:var(--text-1)] text-xs transition-colors px-2 py-1"
                   >
                     Editează
                   </button>
                   <button
                     onClick={() => handleDelete(lesson.id!)}
-                    className="text-gray-600 hover:text-red-400 text-xs transition-colors px-2 py-1"
+                    className="[color:var(--text-3)] hover:text-red-400 text-xs transition-colors px-2 py-1"
                   >
                     Șterge
                   </button>

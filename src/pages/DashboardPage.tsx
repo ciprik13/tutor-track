@@ -55,15 +55,15 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 p-6">
+    <div className="min-h-full p-6">
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-start justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">
+            <h1 className="text-3xl font-bold [color:var(--text-1)] tracking-tight">
               {greeting()}, <span className="text-lime-400">{profile.name.split(' ')[0]}</span>
             </h1>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="[color:var(--text-2)] text-sm mt-1">
               {new Date().toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>
@@ -79,51 +79,51 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div
             onClick={() => navigate('/students')}
-            className="bg-gray-900 border border-gray-800 rounded-xl p-4 cursor-pointer hover:border-gray-700 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 cursor-pointer hover:[border-color:var(--border)] transition-colors"
           >
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-3">Studenți activi</p>
-            <p className="text-white font-bold text-3xl">{activeStudents.length}</p>
-            <p className="text-gray-600 text-xs mt-2">din {students.length} total</p>
+            <p className="[color:var(--text-2)] text-xs uppercase tracking-wider mb-3">Studenți activi</p>
+            <p className="[color:var(--text-1)] font-bold text-3xl">{activeStudents.length}</p>
+            <p className="[color:var(--text-3)] text-xs mt-2">din {students.length} total</p>
           </div>
 
           <div
             onClick={() => navigate('/lessons')}
-            className="bg-gray-900 border border-gray-800 rounded-xl p-4 cursor-pointer hover:border-gray-700 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 cursor-pointer hover:[border-color:var(--border)] transition-colors"
           >
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-3">Lecții în{' '}
+            <p className="[color:var(--text-2)] text-xs uppercase tracking-wider mb-3">Lecții în{' '}
               {new Date().toLocaleDateString('ro-RO', { month: 'long' })}
             </p>
-            <p className="text-white font-bold text-3xl">{lessonsThisMonth.length}</p>
-            <p className="text-gray-600 text-xs mt-2">
+            <p className="[color:var(--text-1)] font-bold text-3xl">{lessonsThisMonth.length}</p>
+            <p className="[color:var(--text-3)] text-xs mt-2">
               {lessonsThisMonth.reduce((s, l) => s + l.pricePerSession, 0)} {profile.currency} total
             </p>
           </div>
 
           <div
             onClick={() => navigate('/payments')}
-            className="bg-gray-900 border border-gray-800 rounded-xl p-4 cursor-pointer hover:border-gray-700 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 cursor-pointer hover:[border-color:var(--border)] transition-colors"
           >
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-3">Total neachitat</p>
+            <p className="[color:var(--text-2)] text-xs uppercase tracking-wider mb-3">Total neachitat</p>
             <p className={`font-bold text-3xl ${unpaidTotal > 0 ? 'text-amber-400' : 'text-lime-400'}`}>
               {unpaidTotal}
             </p>
-            <p className="text-gray-600 text-xs mt-2">{profile.currency}</p>
+            <p className="[color:var(--text-3)] text-xs mt-2">{profile.currency}</p>
           </div>
 
           <div
             onClick={() => navigate('/lessons')}
-            className="bg-gray-900 border border-gray-800 rounded-xl p-4 cursor-pointer hover:border-gray-700 transition-colors"
+            className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl p-4 cursor-pointer hover:[border-color:var(--border)] transition-colors"
           >
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-3">Săptămâna aceasta</p>
-            <p className="text-white font-bold text-3xl">{lessonsThisWeek.length}</p>
-            <p className="text-gray-600 text-xs mt-2">lecții efectuate</p>
+            <p className="[color:var(--text-2)] text-xs uppercase tracking-wider mb-3">Săptămâna aceasta</p>
+            <p className="[color:var(--text-1)] font-bold text-3xl">{lessonsThisWeek.length}</p>
+            <p className="[color:var(--text-3)] text-xs mt-2">lecții efectuate</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
-              <h2 className="text-white font-semibold text-sm">Activitate recentă</h2>
+          <div className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b [border-color:var(--border)] flex items-center justify-between">
+              <h2 className="[color:var(--text-1)] font-semibold text-sm">Activitate recentă</h2>
               <button
                 onClick={() => navigate('/lessons')}
                 className="text-lime-400 text-xs hover:underline"
@@ -133,7 +133,7 @@ export default function DashboardPage() {
             </div>
             {recentActivity.length === 0 ? (
               <div className="px-5 py-8 text-center">
-                <p className="text-gray-600 text-sm">Nicio activitate încă</p>
+                <p className="[color:var(--text-3)] text-sm">Nicio activitate încă</p>
                 <button
                   onClick={() => setLessonModal(true)}
                   className="mt-3 text-lime-400 text-xs hover:underline"
@@ -147,21 +147,21 @@ export default function DashboardPage() {
                   <div
                     key={lesson.id}
                     onClick={() => navigate(`/students/${lesson.studentId}`)}
-                    className="px-5 py-3.5 border-b border-gray-800 last:border-0 flex items-center justify-between cursor-pointer hover:bg-gray-800/50 transition-colors"
+                    className="px-5 py-3.5 border-b [border-color:var(--border)] last:border-0 flex items-center justify-between cursor-pointer hover:[background:var(--bg-input)]/50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${
                         lesson.paymentStatus === 'paid' ? 'bg-lime-400' : 'bg-amber-400'
                       }`} />
                       <div>
-                        <p className="text-white text-sm font-medium">{getStudentName(lesson.studentId)}</p>
-                        <p className="text-gray-500 text-xs mt-0.5">
+                        <p className="[color:var(--text-1)] text-sm font-medium">{getStudentName(lesson.studentId)}</p>
+                        <p className="[color:var(--text-2)] text-xs mt-0.5">
                           {formatDate(lesson.date)} · {lesson.durationMinutes} min
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-white text-sm font-bold">{lesson.pricePerSession} {profile.currency}</p>
+                      <p className="[color:var(--text-1)] text-sm font-bold">{lesson.pricePerSession} {profile.currency}</p>
                       <p className={`text-xs mt-0.5 ${
                         lesson.paymentStatus === 'paid' ? 'text-lime-400' : 'text-amber-400'
                       }`}>
@@ -174,9 +174,9 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-            <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
-              <h2 className="text-white font-semibold text-sm">Studenți activi</h2>
+          <div className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-xl overflow-hidden">
+            <div className="px-5 py-4 border-b [border-color:var(--border)] flex items-center justify-between">
+              <h2 className="[color:var(--text-1)] font-semibold text-sm">Studenți activi</h2>
               <button
                 onClick={() => navigate('/students')}
                 className="text-lime-400 text-xs hover:underline"
@@ -186,7 +186,7 @@ export default function DashboardPage() {
             </div>
             {activeStudents.length === 0 ? (
               <div className="px-5 py-8 text-center">
-                <p className="text-gray-600 text-sm">Niciun student activ</p>
+                <p className="[color:var(--text-3)] text-sm">Niciun student activ</p>
                 <button
                   onClick={() => navigate('/students')}
                   className="mt-3 text-lime-400 text-xs hover:underline"
@@ -210,15 +210,15 @@ export default function DashboardPage() {
                     <div
                       key={student.id}
                       onClick={() => navigate(`/students/${student.id}`)}
-                      className="px-5 py-3.5 border-b border-gray-800 last:border-0 flex items-center justify-between cursor-pointer hover:bg-gray-800/50 transition-colors"
+                      className="px-5 py-3.5 border-b [border-color:var(--border)] last:border-0 flex items-center justify-between cursor-pointer hover:[background:var(--bg-input)]/50 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-xs font-bold text-lime-400">
+                        <div className="w-8 h-8 rounded-lg [background:var(--bg-input)] flex items-center justify-center text-xs font-bold text-lime-400">
                           {student.name.slice(0, 2).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-white text-sm font-medium">{student.name}</p>
-                          <p className="text-gray-500 text-xs mt-0.5">{student.subject} · {studentLessons.length} lecții luna aceasta</p>
+                          <p className="[color:var(--text-1)] text-sm font-medium">{student.name}</p>
+                          <p className="[color:var(--text-2)] text-xs mt-0.5">{student.subject} · {studentLessons.length} lecții luna aceasta</p>
                         </div>
                       </div>
                       {studentUnpaid > 0 && (

@@ -70,12 +70,12 @@ export default function PaymentModal({ payment, onClose }: Props) {
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
       onClick={e => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md p-6">
+      <div className="[background:var(--bg-card)] border [border-color:var(--border)] rounded-2xl w-full max-w-md p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-white font-bold text-lg">
+          <h2 className="[color:var(--text-1)] font-bold text-lg">
             {payment ? 'Editează plată' : 'Plată nouă'}
           </h2>
-          <button onClick={onClose} className="text-gray-600 hover:text-white transition-colors text-xl leading-none">×</button>
+          <button onClick={onClose} className="[color:var(--text-3)] hover:[color:var(--text-1)] transition-colors text-xl leading-none">×</button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -85,7 +85,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
               name="studentId"
               value={form.studentId}
               onChange={handleChange}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
             >
               {students.map(s => (
                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -122,7 +122,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
                 onChange={e => setAmount(e.target.value)}
                 placeholder="ex. 200"
                 min={0}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
             <div>
@@ -131,7 +131,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
                 name="currency"
                 value={form.currency}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="MDL">MDL</option>
                 <option value="USD">USD</option>
@@ -147,7 +147,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
               value={form.period}
               onChange={handleChange}
               placeholder="ex. Aprilie 2026"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
             />
           </div>
 
@@ -159,7 +159,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
                 type="date"
                 value={form.date}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
             <div>
@@ -168,7 +168,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm focus:outline-none focus:border-lime-400 transition-colors"
               >
                 <option value="unpaid">Neachitat</option>
                 <option value="paid">Achitat</option>
@@ -185,7 +185,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
               onChange={handleChange}
               rows={2}
               placeholder="Observații opționale..."
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full [background:var(--bg-input)] border [border-color:var(--border)] rounded-lg px-3 py-2.5 [color:var(--text-1)] text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors resize-none"
             />
           </div>
 
@@ -193,7 +193,7 @@ export default function PaymentModal({ payment, onClose }: Props) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-800 text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
+              className="flex-1 [background:var(--bg-input)] text-gray-400 font-medium rounded-lg py-2.5 text-sm hover:bg-gray-700 transition-colors"
             >
               Anulează
             </button>
