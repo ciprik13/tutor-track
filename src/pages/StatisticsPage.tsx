@@ -53,8 +53,8 @@ export default function StatisticsPage() {
   ]
 
   const cardStyle = {
-    background: isDark ? '#17171f' : '#ffffff',
-    border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
     borderRadius: '12px',
     padding: '20px',
   }
@@ -74,7 +74,7 @@ export default function StatisticsPage() {
   }
 
   return (
-    <div style={{ minHeight: '100%', padding: '24px', background: isDark ? '#0a0a0f' : '#f5f4f0' }}>
+    <div style={{ minHeight: '100%', padding: '24px', background: 'var(--bg-page)' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
         <div style={{ marginBottom: '28px' }}>
