@@ -5,6 +5,7 @@ import { toggleTheme } from '@/store/slices/uiSlice'
 import type { RootState, AppDispatch } from '@/store'
 import { useNavigate } from 'react-router-dom'
 import db from '@/db'
+import { startGoogleAuth } from '@/lib/oauth'
 
 export default function SettingsPage() {
   const dispatch = useDispatch<AppDispatch>()
@@ -99,7 +100,7 @@ export default function SettingsPage() {
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Nume complet</label>
+                <label className="block text-sm text-(--text-2) mb-1">Nume complet</label>
                 <input
                   name="name"
                   value={form.name}
@@ -109,7 +110,7 @@ export default function SettingsPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Email</label>
+                  <label className="block text-sm text-(--text-2) mb-1">Email</label>
                   <input
                     name="email"
                     type="email"
@@ -119,7 +120,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Telefon</label>
+                  <label className="block text-sm text-(--text-2) mb-1">Telefon</label>
                   <input
                     name="phone"
                     value={form.phone}
@@ -138,7 +139,7 @@ export default function SettingsPage() {
             <div className="grid grid-cols-3 gap-3">
               {([60, 90, 120] as const).map(min => (
                 <div key={min}>
-                  <label className="block text-sm text-gray-400 mb-1">{min} min</label>
+                  <label className="block text-sm text-(--text-2) mb-1">{min} min</label>
                   <input
                     name={`defaultPrice${min}`}
                     type="number"
@@ -150,7 +151,7 @@ export default function SettingsPage() {
               ))}
             </div>
             <div className="mt-4">
-              <label className="block text-sm text-gray-400 mb-1">Monedă</label>
+              <label className="block text-sm text-(--text-2) mb-1">Monedă</label>
               <select
                 name="currency"
                 value={form.currency}
@@ -171,6 +172,53 @@ export default function SettingsPage() {
             {saved ? '✓ Salvat!' : 'Salvează modificările'}
           </button>
         </form>
+
+        <div className="mt-6 bg-(--bg-card) border border-(--border) rounded-xl p-5">
+          <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
+            Google Calendar
+          </h2>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-(--text-1) text-sm font-medium">
+                {profile.googleCalendarConnected ? 'Calendar conectat' : 'Conectează Google Calendar'}
+              </p>
+              <p className="text-(--text-2) text-xs mt-0.5">
+                {profile.googleCalendarConnected
+                  ? 'Poți importa lecții din calendar la pagina Lecții'
+                  : 'Importă lecții direct din Google Calendar'}
+              </p>
+            </div>
+            {profile.googleCalendarConnected ? (
+              <div className="flex gap-2">
+                <span className="text-xs bg-lime-400/10 text-lime-500 px-3 py-1.5 rounded-lg font-medium">
+                  ✓ Conectat
+                </span>
+                <button
+                  onClick={() => dispatch(updateProfile({
+                    googleCalendarToken: null,
+                    googleCalendarConnected: false,
+                  }))}
+                  className="text-xs bg-(--bg-input) text-(--text-2) font-medium px-3 py-1.5 rounded-lg hover:bg-(--bg-card-hover) transition-colors"
+                >
+                  Deconectează
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={startGoogleAuth}
+                className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M15.68 8.18c0-.57-.05-1.11-.14-1.64H8v3.1h4.31a3.68 3.68 0 0 1-1.6 2.42v2h2.6c1.52-1.4 2.4-3.46 2.4-5.88z" fill="#4285F4"/>
+                  <path d="M8 16c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-2.7.75 4.79 4.79 0 0 1-4.5-3.32H.9v2.06A8 8 0 0 0 8 16z" fill="#34A853"/>
+                  <path d="M3.5 9.49a4.83 4.83 0 0 1 0-3.08V4.35H.9a8 8 0 0 0 0 7.2l2.6-2.06z" fill="#FBBC05"/>
+                  <path d="M8 3.18c1.23 0 2.33.42 3.2 1.25l2.4-2.4A8 8 0 0 0 .9 4.35L3.5 6.41A4.79 4.79 0 0 1 8 3.18z" fill="#EA4335"/>
+                </svg>
+                Conectează cu Google
+              </button>
+            )}
+          </div>
+        </div>
 
         <div className="mt-6 bg-(--bg-card) border border-(--border) rounded-xl p-5">
           <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
@@ -206,18 +254,18 @@ export default function SettingsPage() {
               </div>
               <button
                 onClick={handleExport}
-                className="bg-(--bg-input) text-gray-300 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-700 transition-colors"
+                className="bg-(--bg-input) text-(--text-2) font-medium rounded-lg px-4 py-2 text-sm hover:bg-(--bg-card-hover) transition-colors"
               >
                 Exportă
               </button>
             </div>
-            <div className="w-full h-px bg-(--bg-input)" />
+            <div className="w-full h-px bg-(--border)" />
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-(--text-1) text-sm font-medium">Import backup</p>
                 <p className="text-(--text-2) text-xs mt-0.5">Restaurează din fișier JSON</p>
               </div>
-              <label className="bg-(--bg-input) text-gray-300 font-medium rounded-lg px-4 py-2 text-sm hover:bg-gray-700 transition-colors cursor-pointer">
+              <label className="bg-(--bg-input) text-(--text-2) font-medium rounded-lg px-4 py-2 text-sm hover:bg-(--bg-card-hover) transition-colors cursor-pointer">
                 Importă
                 <input type="file" accept=".json" onChange={handleImport} className="hidden" />
               </label>
