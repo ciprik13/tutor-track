@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toggleSidebar, toggleTheme } from '@/store/slices/uiSlice'
+import { getInitials } from '@/lib/dateUtils'
 import type { RootState, AppDispatch } from '@/store'
 
 const navItems = [
@@ -228,7 +229,7 @@ export default function Layout({ children }: Props) {
               fontWeight: 700,
               flexShrink: 0,
             }}>
-              {profile.name.slice(0, 2).toUpperCase() || 'TT'}
+              {getInitials(profile.name)}
             </div>
             {sidebarOpen && (
               <div>
