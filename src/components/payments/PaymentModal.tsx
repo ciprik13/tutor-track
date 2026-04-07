@@ -1,77 +1,81 @@
-import { useState } from "react";
-import { useCreatePayment, useUpdatePayment } from "@/queries/usePayments";
-import { useStudents } from "@/queries/useStudents";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store";
-import type { Payment } from "@/types";
+import { useState, useEffect } from 'react'
+import { useCreatePayment, useUpdatePayment } from '@/queries/usePayments'
+import { useStudents } from '@/queries/useStudents'
+import { useLessons } from '@/queries/useLessons'
+import { useSelector } from 'react-redux'
+import type { RootState } from '@/store'
+import type { Payment } from '@/types'
 
 interface Props {
-  payment: Payment | null;
-  onClose: () => void;
+  payment: Payment | null
+  onClose: () => void
 }
 
 export default function PaymentModal({ payment, onClose }: Props) {
-  const profile = useSelector((state: RootState) => state.profile);
-  const { data: students = [] } = useStudents();
+  const profile = useSelector((state: RootState) => state.profile)
+  const { data: students = [] } = useStudents()
 
-  const [form, setForm] = useState<Omit<Payment, "id">>({
-    studentId: payment?.studentId ?? students[0]?.id ?? 0,
-    amount: payment?.amount ?? 0,
+  const [amount, setAmount] = useState(payment?.amount?.toString() ?? '')
+  const [form, setForm] = useState({
+    studentId: payment?.studentId ?? (students[0]?.id ?? 0),
     currency: payment?.currency ?? profile.currency,
-    period:
-      payment?.period ??
-      new Date().toLocaleDateString("ro-RO", {
-        month: "long",
-        year: "numeric",
-      }),
-    status: payment?.status ?? "unpaid",
+    period: payment?.period ?? new Date().toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }),
+    status: payment?.status ?? 'unpaid' as 'paid' | 'unpaid' | 'partial',
     date: payment?.date ?? new Date().toISOString().slice(0, 10),
-    notes: payment?.notes ?? "",
+    notes: payment?.notes ?? '',
     createdAt: payment?.createdAt ?? new Date().toISOString(),
-  });
+  })
 
-  const createPayment = useCreatePayment();
-  const updatePayment = useUpdatePayment();
+  const { data: unpaidLessons = [] } = useLessons({
+    studentId: form.studentId || undefined,
+    paymentStatus: 'unpaid',
+    status: 'done',
+  })
+
+  const unpaidTotal = unpaidLessons.reduce((sum, l) => sum + l.pricePerSession, 0)
+
+  useEffect(() => {
+    if (!payment && form.studentId) {
+      setAmount(unpaidTotal > 0 ? unpaidTotal.toString() : '')
+    }
+  }, [form.studentId, unpaidTotal, payment])
+
+  const createPayment = useCreatePayment()
+  const updatePayment = useUpdatePayment()
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({
+    const { name, value } = e.target
+    setForm(prev => ({
       ...prev,
-      [name]: name === "amount" || name === "studentId" ? Number(value) : value,
-    }));
-  };
+      [name]: name === 'studentId' ? Number(value) : value,
+    }))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
+    const data = { ...form, amount: Number(amount) }
     if (payment?.id) {
-      updatePayment.mutate({ ...form, id: payment.id }, { onSuccess: onClose });
+      updatePayment.mutate({ ...data, id: payment.id }, { onSuccess: onClose })
     } else {
-      createPayment.mutate(form, { onSuccess: onClose });
+      createPayment.mutate(data, { onSuccess: onClose })
     }
-  };
+  }
 
-  const isValid = form.studentId && form.amount > 0 && form.period.trim();
+  const isValid = form.studentId && Number(amount) > 0 && form.period.trim()
 
   return (
     <div
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={e => e.target === e.currentTarget && onClose()}
     >
       <div className="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-white font-bold text-lg">
-            {payment ? "Editează plată" : "Plată nouă"}
+            {payment ? 'Editează plată' : 'Plată nouă'}
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-600 hover:text-white transition-colors text-xl leading-none"
-          >
-            ×
-          </button>
+          <button onClick={onClose} className="text-gray-600 hover:text-white transition-colors text-xl leading-none">×</button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -83,23 +87,42 @@ export default function PaymentModal({ payment, onClose }: Props) {
               onChange={handleChange}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
             >
-              {students.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
+              {students.map(s => (
+                <option key={s.id} value={s.id}>{s.name}</option>
               ))}
             </select>
           </div>
+
+          {!payment && unpaidLessons.length > 0 && (
+            <div className="bg-amber-400/10 border border-amber-400/20 rounded-lg px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-amber-400 text-xs font-medium">
+                  {unpaidLessons.length} lecții neachitate
+                </p>
+                <p className="text-amber-300 text-sm font-bold mt-0.5">
+                  Total: {unpaidTotal} {profile.currency}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAmount(unpaidTotal.toString())}
+                className="text-xs bg-amber-400 text-gray-950 font-semibold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                Folosește suma
+              </button>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-sm text-gray-400 mb-1">Sumă</label>
               <input
-                name="amount"
                 type="number"
-                value={form.amount}
-                onChange={handleChange}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+                placeholder="ex. 200"
+                min={0}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-lime-400 transition-colors"
               />
             </div>
             <div>
@@ -179,11 +202,11 @@ export default function PaymentModal({ payment, onClose }: Props) {
               disabled={!isValid}
               className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
             >
-              {payment ? "Salvează" : "Adaugă"}
+              {payment ? 'Salvează' : 'Adaugă'}
             </button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }
