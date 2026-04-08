@@ -106,25 +106,25 @@ export default function PaymentsPage() {
   }
 
   return (
-    <div className="min-h-full p-6">
+    <div className="min-h-full p-4 md:p-6">
       <div className="max-w-5xl mx-auto">
 
-        <div className="flex items-start justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
           <div>
-            <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">Plăți</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-(--text-1) tracking-tight">Plăți</h1>
             <p className="text-(--text-2) text-sm mt-1">
               Sumar automat per student per lună
             </p>
           </div>
           {totalUnpaid > 0 && (
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <p className="text-xs text-(--text-3) uppercase tracking-wider">Total neachitat</p>
-              <p className="text-2xl font-bold text-[#c07a20] mt-1">{Math.round(totalUnpaid)} {profile.currency}</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#c07a20] mt-1">{Math.round(totalUnpaid)} {profile.currency}</p>
             </div>
           )}
         </div>
 
-        <div className="flex flex-wrap gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-4 sm:mb-6">
           <MonthPicker
             value={monthFilter}
             onChange={setMonthFilter}
@@ -158,7 +158,7 @@ export default function PaymentsPage() {
                 key={`${summary.studentId}-${summary.month}`}
                 className="bg-(--bg-card) border-(--border) border rounded-xl p-4 hover:border-(--border-hover) transition-colors"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
                   <div className="flex items-center gap-4 flex-1">
                     <div
                       className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-[#52ab98] cursor-pointer hover:opacity-80 transition-opacity"
