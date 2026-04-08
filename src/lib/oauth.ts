@@ -56,9 +56,8 @@ export async function exchangeCodeForToken(code: string): Promise<string> {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
       redirect_uri: REDIRECT_URI,
-      grant_type: "authorization_code",
+      grant_type: 'authorization_code',
       code,
       code_verifier: codeVerifier,
     }),
