@@ -132,7 +132,7 @@ export default function ReportsPage() {
                 e.target.value ? Number(e.target.value) : undefined,
               )
             }
-            className="flex-1 bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+            className="flex-1 bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
           >
             <option value="">Selectează student</option>
             {students.map((s) => (
@@ -192,7 +192,7 @@ export default function ReportsPage() {
             <div className="flex gap-3">
               <button
                 onClick={handleCopy}
-                className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-all"
+                className="flex-1 bg-[#2b6777] text-white font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-all"
               >
                 {copied ? "✓ Copiat!" : "Copiază în clipboard"}
               </button>

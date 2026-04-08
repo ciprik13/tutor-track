@@ -105,7 +105,7 @@ export default function SettingsPage() {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                  className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -116,7 +116,7 @@ export default function SettingsPage() {
                     type="email"
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
                   />
                 </div>
                 <div>
@@ -125,7 +125,7 @@ export default function SettingsPage() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
-                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
                   />
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function SettingsPage() {
                     type="number"
                     value={form[`defaultPrice${min}` as keyof typeof form]}
                     onChange={handleChange}
-                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                    className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
                   />
                 </div>
               ))}
@@ -156,7 +156,7 @@ export default function SettingsPage() {
                 name="currency"
                 value={form.currency}
                 onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value="MDL">MDL — Leu moldovenesc</option>
                 <option value="USD">USD — Dolar american</option>
@@ -167,7 +167,7 @@ export default function SettingsPage() {
 
           <button
             type="submit"
-            className="w-full bg-lime-400 text-gray-950 font-semibold rounded-lg py-3 text-sm hover:opacity-90 transition-all"
+            className="w-full bg-[#2b6777] text-white font-semibold rounded-lg py-3 text-sm hover:opacity-90 transition-all"
           >
             {saved ? '✓ Salvat!' : 'Salvează modificările'}
           </button>
@@ -190,7 +190,7 @@ export default function SettingsPage() {
             </div>
             {profile.googleCalendarConnected ? (
               <div className="flex gap-2">
-                <span className="text-xs bg-lime-400/10 text-lime-500 px-3 py-1.5 rounded-lg font-medium">
+                <span className="text-xs bg-[#2b6777]/10 text-[#52ab98] px-3 py-1.5 rounded-lg font-medium">
                   ✓ Conectat
                 </span>
                 <button
@@ -232,7 +232,7 @@ export default function SettingsPage() {
             <button
               onClick={() => dispatch(toggleTheme())}
               className={`relative w-12 h-6 rounded-full transition-colors ${
-                theme === 'dark' ? 'bg-lime-400' : 'bg-gray-700'
+                theme === 'dark' ? 'bg-[#2b6777]' : 'bg-gray-700'
               }`}
             >
               <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${

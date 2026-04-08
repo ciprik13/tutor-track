@@ -80,7 +80,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
           <div>
             <label className="block text-sm text-(--text-2) mb-1">Student</label>
             <select name="studentId" value={form.studentId} onChange={handleChange}
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
             >
               <option value={0} disabled>Selectează student</option>
               {students.map(s => (
@@ -100,7 +100,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Durată</label>
               <select name="durationMinutes" value={form.durationMinutes} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value={60}>60 min</option>
                 <option value={90}>90 min</option>
@@ -110,7 +110,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Preț (MDL)</label>
               <input name="pricePerSession" type="number" value={form.pricePerSession} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               />
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Status lecție</label>
               <select name="status" value={form.status} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value="done">Efectuat</option>
                 <option value="cancelled">Anulat</option>
@@ -128,7 +128,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
             <div>
               <label className="block text-sm text-(--text-2) mb-1">Status plată</label>
               <select name="paymentStatus" value={form.paymentStatus} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-lime-400 transition-colors"
+                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
               >
                 <option value="unpaid">Neachitat</option>
                 <option value="paid">Achitat</option>
@@ -140,7 +140,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
             <label className="block text-sm text-(--text-2) mb-1">Note</label>
             <textarea name="notes" value={form.notes} onChange={handleChange} rows={2}
               placeholder="Observații opționale..."
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-lime-400 transition-colors resize-none"
+              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors resize-none"
             />
           </div>
 
@@ -149,7 +149,7 @@ export default function LessonModal({ lesson, onClose, preselectedStudentId }: P
               className="flex-1 bg-(--bg-input) text-(--text-2) font-medium rounded-lg py-2.5 text-sm hover:bg-(--bg-card-hover) transition-colors"
             >Anulează</button>
             <button type="submit" disabled={!isValid}
-              className="flex-1 bg-lime-400 text-gray-950 font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
+              className="flex-1 bg-[#2b6777] text-white font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
             >{lesson ? 'Salvează' : 'Adaugă'}</button>
           </div>
         </form>

@@ -143,7 +143,7 @@ export default function CalendarImport({ onClose }: Props) {
                 onClick={handleFetch}
                 disabled={loading}
                 style={{
-                  background: '#c8fb57', color: '#0a0a0f', border: 'none',
+                  background: '#52ab98', color: '#0a0a0f', border: 'none',
                   borderRadius: '8px', padding: '10px', fontSize: '13px',
                   fontWeight: 600, cursor: loading ? 'wait' : 'pointer',
                   opacity: loading ? 0.7 : 1,
@@ -169,7 +169,7 @@ export default function CalendarImport({ onClose }: Props) {
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <button
                         onClick={() => setSelected(new Set(events.map(e => e.id)))}
-                        style={{ fontSize: '11px', color: '#c8fb57', background: 'none', border: 'none', cursor: 'pointer' }}
+                        style={{ fontSize: '11px', color: isDark ? "#52ab98" : "#2b6777", background: 'none', border: 'none', cursor: 'pointer' }}
                       >
                         Toate
                       </button>
@@ -212,8 +212,8 @@ export default function CalendarImport({ onClose }: Props) {
                       >
                         <div style={{
                           width: '16px', height: '16px', borderRadius: '4px', flexShrink: 0,
-                          background: isSelected ? '#c8fb57' : 'transparent',
-                          border: `2px solid ${isSelected ? '#c8fb57' : c.text3}`,
+                          background: isSelected ? '#52ab98' : 'transparent',
+                          border: `2px solid ${isSelected ? '#52ab98' : c.text3}`,
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                         }}>
                           {isSelected && <span style={{ fontSize: '10px', color: '#0a0a0f', fontWeight: 700 }}>✓</span>}
@@ -228,7 +228,7 @@ export default function CalendarImport({ onClose }: Props) {
                         </div>
                         <div style={{ textAlign: 'right', flexShrink: 0 }}>
                           {student ? (
-                            <span style={{ fontSize: '11px', background: 'rgba(200,251,87,0.1)', color: '#c8fb57', padding: '2px 8px', borderRadius: '20px' }}>
+                            <span style={{ fontSize: '11px', background: 'rgba(200,251,87,0.1)', color: isDark ? "#52ab98" : "#2b6777", padding: '2px 8px', borderRadius: '20px' }}>
                               {student.name.split(' ')[0]}
                             </span>
                           ) : (
@@ -276,7 +276,7 @@ export default function CalendarImport({ onClose }: Props) {
                 onClick={handleImport}
                 disabled={importing || selected.size === 0}
                 style={{
-                  flex: 2, background: '#c8fb57', color: '#0a0a0f', border: 'none',
+                  flex: 2, background: '#52ab98', color: '#0a0a0f', border: 'none',
                   borderRadius: '8px', padding: '10px', fontSize: '13px',
                   fontWeight: 600, cursor: importing || selected.size === 0 ? 'not-allowed' : 'pointer',
                   opacity: importing || selected.size === 0 ? 0.5 : 1,
@@ -290,7 +290,7 @@ export default function CalendarImport({ onClose }: Props) {
             <button
               onClick={onClose}
               style={{
-                flex: 1, background: '#c8fb57', color: '#0a0a0f', border: 'none',
+                flex: 1, background: '#52ab98', color: '#0a0a0f', border: 'none',
                 borderRadius: '8px', padding: '10px', fontSize: '13px',
                 fontWeight: 600, cursor: 'pointer',
               }}

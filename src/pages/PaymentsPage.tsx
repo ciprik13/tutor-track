@@ -119,7 +119,7 @@ export default function PaymentsPage() {
           {totalUnpaid > 0 && (
             <div className="text-right">
               <p className="text-xs text-(--text-3) uppercase tracking-wider">Total neachitat</p>
-              <p className="text-2xl font-bold text-amber-500 mt-1">{Math.round(totalUnpaid)} {profile.currency}</p>
+              <p className="text-2xl font-bold text-[#c07a20] mt-1">{Math.round(totalUnpaid)} {profile.currency}</p>
             </div>
           )}
         </div>
@@ -136,7 +136,7 @@ export default function PaymentsPage() {
                 onClick={() => setStatusFilter(s)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   statusFilter === s
-                    ? 'bg-lime-400 text-gray-950'
+                    ? 'bg-[#2b6777] text-white'
                     : 'bg-(--bg-input) text-(--text-2) border-(--border) border hover:border-(--border-hover)'
                 }`}
               >
@@ -161,7 +161,7 @@ export default function PaymentsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4 flex-1">
                     <div
-                      className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-lime-500 cursor-pointer hover:opacity-80 transition-opacity"
+                      className="w-10 h-10 rounded-lg bg-(--bg-input) flex items-center justify-center text-sm font-bold text-[#52ab98] cursor-pointer hover:opacity-80 transition-opacity"
                       onClick={() => navigate(`/students/${summary.studentId}`)}
                     >
                       {getInitials(summary.studentName)}
@@ -169,7 +169,7 @@ export default function PaymentsPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3">
                         <p
-                          className="text-(--text-1) font-medium text-sm cursor-pointer hover:text-lime-500 transition-colors"
+                          className="text-(--text-1) font-medium text-sm cursor-pointer hover:text-[#52ab98] transition-colors"
                           onClick={() => navigate(`/students/${summary.studentId}`)}
                         >
                           {summary.studentName}
@@ -187,7 +187,7 @@ export default function PaymentsPage() {
                     <div className="text-right mr-4">
                       <p className="text-(--text-1) font-bold text-lg">{summary.total} {profile.currency}</p>
                       {summary.status === 'partial' && (
-                        <p className="text-xs text-amber-500 mt-0.5">
+                        <p className="text-xs text-[#c07a20] mt-0.5">
                           {Math.round(summary.total * summary.unpaidCount / summary.lessonCount)} neachitat
                         </p>
                       )}
@@ -197,9 +197,9 @@ export default function PaymentsPage() {
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                       summary.status === 'paid'
-                        ? 'bg-lime-400/10 text-lime-500'
+                        ? 'bg-[#2b6777]/10 text-[#52ab98]'
                         : summary.status === 'partial'
-                        ? 'bg-amber-400/10 text-amber-500'
+                        ? 'bg-[#c07a20]/10 text-[#c07a20]'
                         : 'bg-red-400/10 text-red-400'
                     }`}>
                       {summary.status === 'paid' ? 'Achitat' : summary.status === 'partial' ? 'Parțial' : 'Neachitat'}
@@ -208,7 +208,7 @@ export default function PaymentsPage() {
                     {summary.status !== 'paid' && (
                       <button
                         onClick={() => handleMarkAllPaid(summary)}
-                        className="text-xs bg-lime-400 text-gray-950 font-semibold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+                        className="text-xs bg-[#2b6777] text-white font-semibold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
                       >
                         Marchează achitat
                       </button>
