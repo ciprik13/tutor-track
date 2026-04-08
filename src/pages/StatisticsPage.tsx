@@ -140,38 +140,18 @@ export default function StatisticsPage() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100%",
-        padding: "24px",
-        background: "var(--bg-page)",
-      }}
-    >
-      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-        <div style={{ marginBottom: "28px" }}>
-          <h1
-            style={{
-              fontSize: "24px",
-              fontWeight: 700,
-              color: isDark ? "#f0f0f2" : "#18181c",
-              letterSpacing: "-0.4px",
-            }}
-          >
+    <div className="min-h-full p-4 md:p-6 bg-(--bg-page)">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-4 md:mb-6 lg:mb-7">
+          <h1 className="text-xl sm:text-2xl font-bold text-(--text-1) tracking-tight">
             Statistici
           </h1>
-          <p style={{ fontSize: "13px", color: textColor, marginTop: "4px" }}>
+          <p className="text-(--text-2) text-xs sm:text-sm mt-1">
             Anul {currentYear} — privire de ansamblu
           </p>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "12px",
-            marginBottom: "24px",
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
           {[
             {
               label: "Venit total",
@@ -197,54 +177,24 @@ export default function StatisticsPage() {
               sub: `în ${currentYear}`,
             },
           ].map((card) => (
-            <div key={card.label} style={{ ...cardStyle }}>
-              <p
-                style={{
-                  fontSize: "11px",
-                  color: textColor,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  marginBottom: "10px",
-                }}
-              >
+            <div
+              key={card.label}
+              className="bg-(--bg-card) border border-(--border) rounded-xl p-4"
+            >
+              <p className="text-xs text-(--text-2) uppercase tracking-wider mb-2">
                 {card.label}
               </p>
-              <p
-                style={{
-                  fontSize: "22px",
-                  fontWeight: 700,
-                  color: isDark ? "#f0f0f2" : "#18181c",
-                  lineHeight: 1,
-                }}
-              >
+              <p className="text-xl sm:text-2xl font-bold text-(--text-1) leading-none">
                 {card.value}
               </p>
-              <p
-                style={{ fontSize: "11px", color: textColor, marginTop: "6px" }}
-              >
-                {card.sub}
-              </p>
+              <p className="text-xs text-(--text-3) mt-2">{card.sub}</p>
             </div>
           ))}
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "16px",
-            marginBottom: "16px",
-          }}
-        >
-          <div style={cardStyle}>
-            <p
-              style={{
-                fontSize: "13px",
-                fontWeight: 600,
-                color: isDark ? "#f0f0f2" : "#18181c",
-                marginBottom: "20px",
-              }}
-            >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
+          <div className="bg-(--bg-card) border border-(--border) rounded-xl p-4 md:p-5">
+            <p className="text-sm font-semibold text-(--text-1) mb-4">
               Venituri lunare {currentYear}
             </p>
             <ResponsiveContainer width="100%" height={220}>
@@ -289,15 +239,8 @@ export default function StatisticsPage() {
             </ResponsiveContainer>
           </div>
 
-          <div style={cardStyle}>
-            <p
-              style={{
-                fontSize: "13px",
-                fontWeight: 600,
-                color: isDark ? "#f0f0f2" : "#18181c",
-                marginBottom: "20px",
-              }}
-            >
+          <div className="bg-(--bg-card) border border-(--border) rounded-xl p-4 md:p-5">
+            <p className="text-sm font-semibold text-(--text-1) mb-4">
               Lecții per lună
             </p>
             <ResponsiveContainer width="100%" height={220}>
@@ -330,33 +273,13 @@ export default function StatisticsPage() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "16px",
-          }}
-        >
-          <div
-            style={{
-              ...cardStyle,
-              display: "flex",
-              alignItems: "center",
-              gap: "24px",
-            }}
-          >
-            <div>
-              <p
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: isDark ? "#f0f0f2" : "#18181c",
-                  marginBottom: "20px",
-                }}
-              >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <div className="bg-(--bg-card) border border-(--border) rounded-xl p-4 md:p-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="flex-shrink-0">
+              <p className="text-sm font-semibold text-(--text-1) mb-3">
                 Studenți
               </p>
-              <ResponsiveContainer width={160} height={160}>
+              <ResponsiveContainer width={140} height={140}>
                 <PieChart>
                   <Pie
                     data={studentData}
@@ -376,84 +299,36 @@ export default function StatisticsPage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div style={{ flex: 1 }}>
-              <p
-                style={{
-                  fontSize: "32px",
-                  fontWeight: 700,
-                  color: isDark ? "#f0f0f2" : "#18181c",
-                  lineHeight: 1,
-                }}
-              >
+            <div className="flex-1">
+              <p className="text-xl sm:text-2xl font-bold text-(--text-1) leading-none">
                 {students.length}
               </p>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: textColor,
-                  marginTop: "4px",
-                  marginBottom: "16px",
-                }}
-              >
+              <p className="text-xs text-(--text-3) mt-1.5 mb-4 sm:mb-5">
                 studenți total
               </p>
-              {studentData.map((s) => (
-                <div
-                  key={s.name}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginBottom: "8px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "8px",
-                      height: "8px",
-                      borderRadius: "50%",
-                      background: s.color,
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span style={{ fontSize: "12px", color: textColor }}>
-                    {s.name}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: isDark ? "#f0f0f2" : "#18181c",
-                      marginLeft: "auto",
-                    }}
-                  >
-                    {s.value}
-                  </span>
-                </div>
-              ))}
+              <div className="space-y-2">
+                {studentData.map((s) => (
+                  <div key={s.name} className="flex items-center gap-2">
+                    <div
+                      className="w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ background: s.color }}
+                    />
+                    <span className="text-xs text-(--text-2)">{s.name}</span>
+                    <span className="text-xs font-semibold text-(--text-1) ml-auto">
+                      {s.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div
-            style={{
-              ...cardStyle,
-              display: "flex",
-              alignItems: "center",
-              gap: "24px",
-            }}
-          >
-            <div>
-              <p
-                style={{
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  color: isDark ? "#f0f0f2" : "#18181c",
-                  marginBottom: "20px",
-                }}
-              >
+          <div className="bg-(--bg-card) border border-(--border) rounded-xl p-4 md:p-5 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <div className="flex-shrink-0">
+              <p className="text-sm font-semibold text-(--text-1) mb-3">
                 Durată lecții
               </p>
-              <ResponsiveContainer width={160} height={160}>
+              <ResponsiveContainer width={140} height={140}>
                 <PieChart>
                   <Pie
                     data={durationData}
@@ -473,61 +348,27 @@ export default function StatisticsPage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div style={{ flex: 1 }}>
-              <p
-                style={{
-                  fontSize: "32px",
-                  fontWeight: 700,
-                  color: isDark ? "#f0f0f2" : "#18181c",
-                  lineHeight: 1,
-                }}
-              >
+            <div className="flex-1">
+              <p className="text-xl sm:text-2xl font-bold text-(--text-1) leading-none">
                 {yearLessons.length}
               </p>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: textColor,
-                  marginTop: "4px",
-                  marginBottom: "16px",
-                }}
-              >
+              <p className="text-xs text-(--text-3) mt-1.5 mb-4 sm:mb-5">
                 lecții în {currentYear}
               </p>
-              {durationData.map((d) => (
-                <div
-                  key={d.name}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginBottom: "8px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "8px",
-                      height: "8px",
-                      borderRadius: "50%",
-                      background: d.color,
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span style={{ fontSize: "12px", color: textColor }}>
-                    {d.name}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      color: isDark ? "#f0f0f2" : "#18181c",
-                      marginLeft: "auto",
-                    }}
-                  >
-                    {d.value}
-                  </span>
-                </div>
-              ))}
+              <div className="space-y-2">
+                {durationData.map((d) => (
+                  <div key={d.name} className="flex items-center gap-2">
+                    <div
+                      className="w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ background: d.color }}
+                    />
+                    <span className="text-xs text-(--text-2)">{d.name}</span>
+                    <span className="text-xs font-semibold text-(--text-1) ml-auto">
+                      {d.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

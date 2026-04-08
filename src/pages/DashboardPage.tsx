@@ -62,11 +62,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-full p-6">
+    <div className="min-h-full p-4 md:p-6">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
           <div>
-            <h1 className="text-3xl font-bold text-(--text-1) tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-(--text-1) tracking-tight">
               {greeting()},{" "}
               <span className="text-[#52ab98]">
                 {profile.name.split(" ")[0]}
@@ -90,7 +90,7 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-4 md:mb-6">
           <div
             onClick={() => navigate("/students")}
             className="bg-(--bg-card) border border-(--border) rounded-xl p-4 cursor-pointer hover:border-(--border) transition-colors"
@@ -152,7 +152,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           <div className="bg-(--bg-card) border border-(--border) rounded-xl overflow-hidden">
             <div className="px-5 py-4 border-b border-(--border) flex items-center justify-between">
               <h2 className="text-(--text-1) font-semibold text-sm">
