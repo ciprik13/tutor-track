@@ -55,23 +55,23 @@ export default function StudentDetailPage() {
   )
 
   return (
-    <div className="min-h-full p-6">
+    <div className="min-h-full p-4 md:p-6">
       <div className="max-w-4xl mx-auto">
 
         <button
           onClick={() => navigate('/students')}
-          className="text-(--text-2) hover:text-(--text-1) text-sm mb-6 flex items-center gap-1 transition-colors"
+          className="text-(--text-2) hover:text-(--text-1) text-sm mb-4 md:mb-6 flex items-center gap-1 transition-colors"
         >
           ← Înapoi la studenți
         </button>
 
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="w-14 h-14 rounded-xl bg-(--bg-input) flex items-center justify-center text-lg font-bold text-[#52ab98]">
             {getInitials(student.name)}
           </div>
           <div className="flex-1">
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">{student.name}</h1>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="text-xl sm:text-2xl font-bold text-(--text-1) tracking-tight">{student.name}</h1>
               {student.priority && (
                 <span className="text-xs bg-[#c07a20]/10 text-[#c07a20] px-2 py-0.5 rounded-full">Prioritar</span>
               )}
@@ -89,7 +89,7 @@ export default function StudentDetailPage() {
         </div>
 
         {unpaidLessons.length > 0 && (
-          <div className="bg-[#c07a20]/10 border border-amber-400/20 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <div className="bg-[#c07a20]/10 border border-amber-400/20 rounded-xl p-4 mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div>
               <p className="text-[#c07a20] text-xs font-medium uppercase tracking-wider">Lecții neachitate</p>
               <p className="text-(--text-1) font-bold text-lg mt-1">
@@ -142,8 +142,8 @@ export default function StudentDetailPage() {
             ) : (
               <div className="grid gap-3">
                 {lessons.map(lesson => (
-                  <div key={lesson.id} className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex items-center justify-between hover:border-(--border) transition-colors">
-                    <div className="flex items-center gap-4">
+                  <div key={lesson.id} className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 hover:border-(--border) transition-colors">
+                    <div className="flex items-center gap-4 flex-1">
                       <div className="text-center min-w-[40px]">
                         <p className="text-(--text-1) font-bold text-lg leading-none">{new Date(lesson.date).getDate()}</p>
                         <p className="text-(--text-2) text-xs">{new Date(lesson.date).toLocaleDateString('ro-RO', { month: 'short' })}</p>
@@ -154,7 +154,7 @@ export default function StudentDetailPage() {
                         <p className="text-(--text-2) text-xs mt-0.5">{lesson.durationMinutes} min · {lesson.pricePerSession} MDL</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <button
                         onClick={() => togglePayment.mutate({ id: lesson.id!, paymentStatus: lesson.paymentStatus === 'paid' ? 'unpaid' : 'paid' })}
                         className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
@@ -205,12 +205,12 @@ export default function StudentDetailPage() {
             ) : (
               <div className="grid gap-3">
                 {payments.map(payment => (
-                  <div key={payment.id} className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex items-center justify-between hover:border-(--border) transition-colors">
-                    <div>
+                  <div key={payment.id} className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 hover:border-(--border) transition-colors">
+                    <div className="flex-1">
                       <p className="text-(--text-1) font-medium text-sm">{payment.period}</p>
                       <p className="text-(--text-2) text-xs mt-0.5">{formatDate(payment.date)}</p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                       <p className="text-(--text-1) font-bold">{payment.amount} {payment.currency}</p>
                       <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                         payment.status === 'paid' ? 'bg-[#2b6777]/10 text-[#52ab98]'

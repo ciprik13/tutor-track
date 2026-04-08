@@ -36,12 +36,12 @@ export default function StudentsPage() {
   }
 
   return (
-    <div className="min-h-full p-6">
+    <div className="min-h-full p-4 md:p-6">
       <div className="max-w-5xl mx-auto">
 
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
           <div>
-            <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">Studenți</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-(--text-1) tracking-tight">Studenți</h1>
             <p className="text-(--text-2) text-sm mt-1">{students.length} studenți</p>
           </div>
           <button
@@ -52,7 +52,7 @@ export default function StudentsPage() {
           </button>
         </div>
 
-        <div className="flex gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4 sm:mb-6">
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -90,7 +90,7 @@ export default function StudentsPage() {
             {students.map(student => (
               <div
                 key={student.id}
-                className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex items-center justify-between hover:border-(--border) transition-colors"
+                className="bg-(--bg-card) border border-(--border) rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 hover:border-(--border) transition-colors"
               >
                 <div
                   className="flex items-center gap-4 flex-1 cursor-pointer"

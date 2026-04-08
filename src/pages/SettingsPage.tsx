@@ -85,11 +85,11 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-full p-6">
+    <div className="min-h-full p-4 md:p-6">
       <div className="max-w-2xl mx-auto">
 
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">Setări</h1>
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold text-(--text-1) tracking-tight">Setări</h1>
           <p className="text-(--text-2) text-sm mt-1">Gestionează profilul și preferințele</p>
         </div>
 
@@ -108,7 +108,7 @@ export default function SettingsPage() {
                   className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm text-(--text-2) mb-1">Email</label>
                   <input
@@ -136,7 +136,7 @@ export default function SettingsPage() {
             <h2 className="text-(--text-1) font-semibold text-sm mb-4 uppercase tracking-wider">
               Prețuri implicite
             </h2>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {([60, 90, 120] as const).map(min => (
                 <div key={min}>
                   <label className="block text-sm text-(--text-2) mb-1">{min} min</label>

@@ -5,7 +5,7 @@ import { useUpdateLesson } from "@/queries/useLessons";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { useQueryClient } from "@tanstack/react-query";
-import MonthPicker from '@/components/ui/MonthPicker'
+import MonthPicker from "@/components/ui/MonthPicker";
 
 export default function ReportsPage() {
   const [selectedStudentId, setSelectedStudentId] = useState<
@@ -113,10 +113,10 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="min-h-full p-6">
+    <div className="min-h-full p-4 md:p-6">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-(--text-1) tracking-tight">
+        <div className="mb-4 md:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-(--text-1) tracking-tight">
             Rapoarte
           </h1>
           <p className="text-(--text-2) text-sm mt-1">
@@ -124,7 +124,7 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        <div className="flex gap-3 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4 sm:mb-6">
           <select
             value={selectedStudentId ?? ""}
             onChange={(e) =>
@@ -142,17 +142,13 @@ export default function ReportsPage() {
             ))}
           </select>
 
-          <MonthPicker
-            value={selectedMonth}
-            onChange={setSelectedMonth}
-          />
+          <MonthPicker value={selectedMonth} onChange={setSelectedMonth} />
         </div>
 
         {!selectedStudentId ? (
           <div>
             <div className="bg-(--bg-card) border-2 border-dashed border-(--border) rounded-xl p-5 mb-4 select-none">
-              <pre className="text-(--text-1) text-sm whitespace-pre-wrap font-sans leading-relaxed">{
-              `Salut [Nume Student]. Îți trimit orarul lecțiilor de [Materie] din luna [Lună] [An]:
+              <pre className="text-(--text-1) text-sm whitespace-pre-wrap font-sans leading-relaxed">{`Salut [Nume Student]. Îți trimit orarul lecțiilor de [Materie] din luna [Lună] [An]:
 
               1) [zi] [lună] — [durata] minute
               2) [zi] [lună] — [durata] minute
@@ -164,8 +160,7 @@ export default function ReportsPage() {
               Total de achitat: [total] lei
 
               ℹ️ Date MIA: 📞 [telefon]  •  📧 [email]
-              Dacă ai întrebări, sunt aici. 😊`
-              }</pre>
+              Dacă ai întrebări, sunt aici. 😊`}</pre>
             </div>
             <div className="flex items-center gap-3 mb-6">
               <div className="flex-1 h-px bg-(--border)" />
