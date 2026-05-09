@@ -1,229 +1,706 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { toggleSidebar, toggleTheme } from '@/store/slices/uiSlice'
-import { getInitials } from '@/lib/dateUtils'
-import type { RootState, AppDispatch } from '@/store'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { toggleSidebar, toggleTheme } from "@/store/slices/uiSlice";
+import { getInitials } from "@/lib/dateUtils";
+import type { RootState, AppDispatch } from "@/store";
+
+// ── Icons ────────────────────────────────────────────────────
+const Ic = {
+  Dashboard: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" />
+    </svg>
+  ),
+  Students: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
+  Lessons: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    </svg>
+  ),
+  Payments: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="2" y="5" width="20" height="14" rx="2" />
+      <line x1="2" y1="10" x2="22" y2="10" />
+    </svg>
+  ),
+  Reports: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+    </svg>
+  ),
+  Statistics: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+    </svg>
+  ),
+  Settings: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  ),
+  Sun: () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+    </svg>
+  ),
+  Moon: () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  ),
+  Menu: () => (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  ),
+  Close: () => (
+    <svg
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  ),
+  ChevronsLeft: () => (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="11 17 6 12 11 7" />
+      <polyline points="18 17 13 12 18 7" />
+    </svg>
+  ),
+  Plus: () => (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+    >
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  ),
+};
 
 const navItems = [
-  {
-    path: '/dashboard', label: 'Dashboard',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>,
-  },
-  {
-    path: '/students', label: 'Studenți',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>,
-  },
-  {
-    path: '/lessons', label: 'Lecții',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="2" width="14" height="12" rx="1.5"/><path d="M5 1v2M11 1v2M1 6h14"/></svg>,
-  },
-  {
-    path: '/payments', label: 'Plăți',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="1" y="4" width="14" height="9" rx="1.5"/><path d="M1 7h14M4 10.5h2M10 10.5h2"/></svg>,
-  },
-  {
-    path: '/reports', label: 'Rapoarte',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 12V5l5-3 5 3v7"/><path d="M6 12V9h4v3"/></svg>,
-  },
-  {
-    path: '/statistics', label: 'Statistici',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M1 12l4-4 3 3 4-5 3 3"/><path d="M1 15h14"/></svg>,
-  },
-  {
-    path: '/settings', label: 'Setări',
-    icon: <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg>,
-  },
-]
+  { path: "/dashboard", label: "Dashboard", Icon: Ic.Dashboard },
+  { path: "/students", label: "Studenți", Icon: Ic.Students },
+  { path: "/lessons", label: "Lecții", Icon: Ic.Lessons },
+  { path: "/payments", label: "Plăți", Icon: Ic.Payments },
+  { path: "/reports", label: "Rapoarte", Icon: Ic.Reports },
+  { path: "/statistics", label: "Statistici", Icon: Ic.Statistics },
+  { path: "/settings", label: "Setări", Icon: Ic.Settings },
+];
 
-interface Props { children: React.ReactNode }
+// ── Logo components ──────────────────────────────────────────
+
+/**
+ * Full logo — shown when sidebar is expanded or in mobile header.
+ * logo.png is 677×369 px (landscape). At height:40 it renders ~74×40px,
+ * showing the compass icon + "TutorTrack" text in full.
+ */
+const LogoFull = ({
+  height = 40,
+  onClick,
+}: {
+  height?: number;
+  onClick?: () => void;
+}) => (
+  <div
+    onClick={onClick}
+    style={{
+      cursor: onClick ? "pointer" : "default",
+      display: "flex",
+      alignItems: "center",
+    }}
+  >
+    <img
+      src="/logo.png"
+      alt="TutorTrack"
+      style={{ height, width: "auto", maxWidth: 170, display: "block" }}
+      onError={(e) => {
+        const img = e.currentTarget as HTMLImageElement;
+        img.style.display = "none";
+        const span = document.createElement("span");
+        span.style.cssText = `font-family:var(--font-display);font-weight:700;font-size:15.5px;letter-spacing:-0.025em;color:var(--text-1)`;
+        span.textContent = "TutorTrack";
+        img.parentElement?.appendChild(span);
+      }}
+    />
+  </div>
+);
+
+/**
+ * Icon-only mark — shown in the collapsed sidebar (64px wide).
+ * logo-icon.png is 615×406 px (ratio ≈ 1.51 : 1, NOT square).
+ * We render it at a fixed width so it keeps its natural proportions
+ * instead of being squeezed into a 1:1 box.
+ */
+const LogoMark = ({ onClick }: { onClick?: () => void }) => {
+  // Natural render: 46 px wide → height ≈ 30 px (616/406 ≈ 1.52)
+  const W = 46;
+  return (
+    <button
+      onClick={onClick}
+      title="Extinde bara"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 52,
+        height: 44,
+        border: "none",
+        cursor: onClick ? "pointer" : "default",
+        padding: 0,
+        background: "transparent",
+        flexShrink: 0,
+      }}
+    >
+      <img
+        src="/logo-icon.png"
+        alt="TutorTrack"
+        style={{ width: W, height: "auto", display: "block" }}
+        onError={(e) => {
+          const img = e.currentTarget as HTMLImageElement;
+          img.style.display = "none";
+          const el = img.parentElement as HTMLElement;
+          el.style.cssText += `;background:var(--accent);color:var(--accent-fg);font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:-0.04em;border-radius:9px;width:36px;height:36px`;
+          el.textContent = "tt";
+        }}
+      />
+    </button>
+  );
+};
+
+interface Props {
+  children: React.ReactNode;
+}
 
 export default function Layout({ children }: Props) {
-  const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const profile = useSelector((state: RootState) => state.profile)
-  const { theme, sidebarOpen } = useSelector((state: RootState) => state.ui)
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const profile = useSelector((s: RootState) => s.profile);
+  const { theme, sidebarOpen } = useSelector((s: RootState) => s.ui);
+  const isDark = theme === "dark";
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    const h = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
 
-  // Închide drawer pe mobile când navighezi
   useEffect(() => {
-    if (isMobile) setMobileOpen(false)
-  }, [location.pathname, isMobile])
+    if (isMobile) setMobileOpen(false);
+  }, [location.pathname, isMobile]);
 
-  const isDark = theme === 'dark'
-  const c = {
-    bg: isDark ? '#0f1f24' : '#f2f2f2',
-    sidebar: isDark ? '#0d1c21' : '#ffffff',
-    border: isDark ? 'rgba(82,171,152,0.12)' : 'rgba(43,103,119,0.12)',
-    text1: isDark ? '#e8f4f6' : '#1a3a42',
-    text2: isDark ? '#7aaab5' : '#5a7a82',
-    text3: isDark ? '#3a6575' : '#9ab5bc',
-    activeText: '#ffffff',
-    activeBg: isDark ? '#52ab98' : '#2b6777',
-    hoverBg: isDark ? '#1e3540' : '#e8f2f5',
-  }
+  const showLabel = sidebarOpen || isMobile;
 
+  // ── Sidebar inner content ────────────────────────────────
   const SidebarContent = () => (
-    <>
-      <div style={{
-        padding: '16px', borderBottom: `1px solid ${c.border}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        minHeight: '60px', gap: '8px',
-      }}>
-        {(!isMobile ? sidebarOpen : true) && (
-          <div onClick={() => { navigate('/dashboard'); if(isMobile) setMobileOpen(false) }}
-            style={{ cursor:'pointer', flex:1 }}>
-            <div style={{ fontSize:'17px', fontWeight:700, color: c.text1, letterSpacing:'-0.3px' }}>
-              Tutor<span style={{ color: c.activeBg }}>Track</span>
-            </div>
-          </div>
-        )}
-        <button onClick={() => dispatch(toggleTheme())}
-          style={{ background:'none', border:'none', cursor:'pointer', color: c.text3, padding:'4px', borderRadius:'6px', display:'flex', alignItems:'center' }}>
-          {isDark
-            ? <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.2 3.2l1 1M11.8 11.8l1 1M11.8 3.2l-1 1M3.2 11.8l1-1"/></svg>
-            : <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M13.5 10A6 6 0 0 1 6 2.5a6 6 0 1 0 7.5 7.5z"/></svg>
-          }
-        </button>
-        {!isMobile && (
-          <button onClick={() => dispatch(toggleSidebar())}
-            style={{ background:'none', border:'none', cursor:'pointer', color: c.text3, padding:'4px', borderRadius:'6px', display:'flex', alignItems:'center' }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 4h10M3 8h10M3 12h10"/></svg>
-          </button>
-        )}
-        {isMobile && (
-          <button onClick={() => setMobileOpen(false)}
-            style={{ background:'none', border:'none', cursor:'pointer', color: c.text3, padding:'4px', fontSize:'20px', lineHeight:1 }}>×</button>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      {/* Brand header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: showLabel ? "space-between" : "center",
+          padding: showLabel ? "12px 14px 12px 16px" : "12px 0",
+          height: 62,
+          flexShrink: 0,
+        }}
+      >
+        {showLabel ? (
+          <>
+            {/* Full logo — click navigates to dashboard */}
+            <LogoFull
+              height={36}
+              onClick={() => {
+                navigate("/dashboard");
+                setMobileOpen(false);
+              }}
+            />
+
+            {/* Collapse / close button */}
+            {isMobile ? (
+              <button
+                onClick={() => setMobileOpen(false)}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 7,
+                  color: "var(--text-2)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <Ic.Close />
+              </button>
+            ) : (
+              <button
+                onClick={() => dispatch(toggleSidebar())}
+                title="Restrânge bara"
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 6,
+                  color: "var(--text-3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  transition: "all 120ms",
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "var(--bg-card-hover)";
+                  (e.currentTarget as HTMLElement).style.color =
+                    "var(--text-1)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent";
+                  (e.currentTarget as HTMLElement).style.color =
+                    "var(--text-3)";
+                }}
+              >
+                <Ic.ChevronsLeft />
+              </button>
+            )}
+          </>
+        ) : (
+          /* Collapsed sidebar — icon-only mark, click to expand */
+          <LogoMark onClick={() => dispatch(toggleSidebar())} />
         )}
       </div>
 
-      <nav style={{ padding:'12px 8px', flex:1 }}>
-        {navItems.map(item => {
-          const isActive = location.pathname === item.path ||
-            (item.path === '/students' && location.pathname.startsWith('/students'))
-          const showLabel = isMobile ? true : sidebarOpen
+      {/* New lesson CTA */}
+      <div style={{ padding: showLabel ? "0 12px 8px" : "0 10px 8px" }}>
+        <button
+          onClick={() => navigate("/lessons")}
+          className="tt-btn tt-btn-primary"
+          style={{
+            width: "100%",
+            height: 34,
+            justifyContent: "center",
+            gap: 6,
+          }}
+        >
+          <Ic.Plus />
+          {showLabel && "Lecție nouă"}
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <nav style={{ padding: showLabel ? "2px 10px" : "2px 8px", flex: 1 }}>
+        {navItems.map(({ path, label, Icon }) => {
+          const isActive =
+            location.pathname === path ||
+            (path === "/students" && location.pathname.startsWith("/students"));
           return (
-            <div key={item.path} onClick={() => navigate(item.path)}
+            <button
+              key={path}
+              onClick={() => navigate(path)}
+              title={!showLabel ? label : undefined}
               style={{
-                display:'flex', alignItems:'center', gap:'10px',
-                padding: showLabel ? '9px 12px' : '9px',
-                borderRadius:'8px', cursor:'pointer', marginBottom:'2px',
-                justifyContent: showLabel ? 'flex-start' : 'center',
-                background: isActive ? c.activeBg : 'transparent',
-                color: isActive ? c.activeText : c.text2,
-                fontSize:'13px', fontWeight: isActive ? 600 : 400,
-                transition:'all 0.12s', whiteSpace:'nowrap',
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                width: "100%",
+                padding: showLabel ? "8px 10px" : "9px",
+                marginBottom: 1,
+                borderRadius: 9,
+                justifyContent: showLabel ? "flex-start" : "center",
+                background: isActive ? "var(--accent-soft)" : "transparent",
+                color: isActive ? "var(--accent)" : "var(--text-2)",
+                fontSize: 13.5,
+                fontWeight: isActive ? 600 : 500,
+                letterSpacing: "-0.01em",
+                transition: "all 120ms ease",
+                cursor: "pointer",
+                border: "none",
+                fontFamily: "var(--font-text)",
+                whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => { if (!isActive) { (e.currentTarget as HTMLElement).style.background = c.hoverBg; (e.currentTarget as HTMLElement).style.color = c.text1 } }}
-              onMouseLeave={e => { if (!isActive) { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = c.text2 } }}
+              onMouseEnter={(e) => {
+                if (!isActive) {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "var(--bg-card-hover)";
+                  (e.currentTarget as HTMLElement).style.color =
+                    "var(--text-1)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "transparent";
+                  (e.currentTarget as HTMLElement).style.color =
+                    "var(--text-2)";
+                }
+              }}
             >
-              {item.icon}
-              {showLabel && item.label}
-            </div>
-          )
+              <Icon />
+              {showLabel && label}
+            </button>
+          );
         })}
       </nav>
 
-      <div style={{ padding:'14px 16px', borderTop:`1px solid ${c.border}` }}>
-        <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-          <div style={{
-            width:'30px', height:'30px', borderRadius:'8px',
-            background: c.activeBg, color: '#ffffff',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            fontSize:'11px', fontWeight:700, flexShrink:0,
-          }}>
-            {getInitials(profile.name)}
+      {/* Theme toggle */}
+      <div style={{ padding: showLabel ? "0 10px 6px" : "0 8px 6px" }}>
+        <button
+          onClick={() => dispatch(toggleTheme())}
+          title={isDark ? "Mod luminos" : "Mod întunecat"}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            width: "100%",
+            padding: showLabel ? "8px 10px" : "9px",
+            borderRadius: 9,
+            color: "var(--text-2)",
+            fontSize: 13.5,
+            fontWeight: 500,
+            justifyContent: showLabel ? "flex-start" : "center",
+            transition: "all 120ms",
+            cursor: "pointer",
+            border: "none",
+            background: "transparent",
+            fontFamily: "var(--font-text)",
+            whiteSpace: "nowrap",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.background =
+              "var(--bg-card-hover)";
+            (e.currentTarget as HTMLElement).style.color = "var(--text-1)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "transparent";
+            (e.currentTarget as HTMLElement).style.color = "var(--text-2)";
+          }}
+        >
+          {isDark ? <Ic.Sun /> : <Ic.Moon />}
+          {showLabel && <span>{isDark ? "Mod luminos" : "Mod întunecat"}</span>}
+        </button>
+      </div>
+
+      {/* User card */}
+      <div
+        style={{
+          padding: showLabel ? "10px 12px" : "10px 8px",
+          borderTop: "0.5px solid var(--border)",
+          flexShrink: 0,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: showLabel ? "6px 8px" : 0,
+            borderRadius: 10,
+            justifyContent: showLabel ? "flex-start" : "center",
+          }}
+        >
+          <div
+            className="tt-avatar"
+            style={{ width: 30, height: 30, fontSize: 11, flexShrink: 0 }}
+          >
+            {getInitials(profile.name || "T")}
           </div>
-          {(isMobile || sidebarOpen) && (
-            <div>
-              <div style={{ fontSize:'12px', fontWeight:500, color: c.text1 }}>{profile.name || 'Tutor'}</div>
-              <div style={{ fontSize:'10px', color: c.text3 }}>{profile.email || ''}</div>
+          {showLabel && (
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  color: "var(--text-1)",
+                  letterSpacing: "-0.01em",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {profile.name || "Tutor"}
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  color: "var(--text-3)",
+                  marginTop: 1,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {profile.email || ""}
+              </div>
             </div>
           )}
         </div>
       </div>
-    </>
-  )
+    </div>
+  );
 
   return (
-    <div style={{ display:'flex', height:'100vh', overflow:'hidden', background: c.bg }}>
-
-      {/* Mobile top bar */}
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        overflow: "hidden",
+        background: "var(--bg-page)",
+      }}
+    >
+      {/* ── Mobile top bar ── */}
       {isMobile && (
-        <div style={{
-          position:'fixed', top:0, left:0, right:0, zIndex:100,
-          background: c.sidebar, borderBottom:`1px solid ${c.border}`,
-          height:'56px', display:'flex', alignItems:'center',
-          justifyContent:'space-between', padding:'0 16px',
-        }}>
-          <button onClick={() => setMobileOpen(true)}
-            style={{ background:'none', border:'none', cursor:'pointer', color: c.text2, display:'flex', alignItems:'center' }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 5h14M3 10h14M3 15h14"/></svg>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 100,
+            background: "var(--bg-card)",
+            borderBottom: "0.5px solid var(--border)",
+            height: 54,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 14px",
+          }}
+        >
+          <button
+            onClick={() => setMobileOpen(true)}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 8,
+              color: "var(--text-1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Ic.Menu />
           </button>
-          <div style={{ fontSize:'16px', fontWeight:700, color: c.text1 }}>
-            Tutor<span style={{ color: c.activeBg }}>Track</span>
-          </div>
-          <button onClick={() => dispatch(toggleTheme())}
-            style={{ background:'none', border:'none', cursor:'pointer', color: c.text3, display:'flex', alignItems:'center' }}>
-            {isDark
-              ? <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15"/></svg>
-              : <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M13.5 10A6 6 0 0 1 6 2.5a6 6 0 1 0 7.5 7.5z"/></svg>
-            }
+
+          {/* Logo in mobile topbar — fixed height, click → dashboard */}
+          <LogoFull height={28} onClick={() => navigate("/dashboard")} />
+
+          <button
+            onClick={() => dispatch(toggleTheme())}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 8,
+              color: "var(--text-2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {isDark ? <Ic.Sun /> : <Ic.Moon />}
           </button>
         </div>
       )}
 
-      {/* Mobile overlay */}
+      {/* ── Mobile overlay ── */}
       {isMobile && mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
-          style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', zIndex:150 }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "var(--bg-overlay)",
+            zIndex: 150,
+            backdropFilter: "blur(4px)",
+          }}
         />
       )}
 
-      {/* Mobile drawer */}
+      {/* ── Mobile drawer ── */}
       {isMobile && (
-        <div style={{
-          position:'fixed', top:0, left:0, bottom:0, zIndex:200,
-          width:'260px', background: c.sidebar,
-          transform: mobileOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition:'transform 0.25s ease',
-          display:'flex', flexDirection:'column',
-          boxShadow: mobileOpen ? '4px 0 24px rgba(0,0,0,0.2)' : 'none',
-        }}>
-          <SidebarContent />
-        </div>
-      )}
-
-      {/* Desktop sidebar */}
-      {!isMobile && (
-        <aside style={{
-          width: sidebarOpen ? '220px' : '64px',
-          height:'100vh', background: c.sidebar,
-          borderRight:`1px solid ${c.border}`,
-          display:'flex', flexDirection:'column',
-          transition:'width 0.2s ease', flexShrink:0, overflow:'hidden',
-        }}>
+        <aside
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            zIndex: 200,
+            width: 260,
+            background: "var(--bg-card)",
+            borderRight: "0.5px solid var(--border)",
+            transform: mobileOpen ? "translateX(0)" : "translateX(-100%)",
+            transition: "transform 240ms cubic-bezier(.2,.7,.3,1)",
+            boxShadow: mobileOpen ? "var(--shadow-modal)" : "none",
+          }}
+        >
           <SidebarContent />
         </aside>
       )}
 
-      <main style={{
-        flex:1, overflowY:'auto', height:'100vh',
-        background: c.bg, transition:'background 0.3s',
-        paddingTop: isMobile ? '56px' : '0',
-      }}>
+      {/* ── Desktop sidebar ── */}
+      {!isMobile && (
+        <aside
+          style={{
+            width: sidebarOpen ? 220 : 64,
+            height: "100vh",
+            background: "var(--bg-card)",
+            borderRight: "0.5px solid var(--border)",
+            display: "flex",
+            flexDirection: "column",
+            transition: "width 200ms ease",
+            flexShrink: 0,
+            overflow: "hidden",
+          }}
+        >
+          <SidebarContent />
+        </aside>
+      )}
+
+      {/* ── Main content ── */}
+      <main
+        style={{
+          flex: 1,
+          overflowY: "auto",
+          height: "100vh",
+          background: "var(--bg-page)",
+          paddingTop: isMobile ? 54 : 0,
+        }}
+      >
         {children}
       </main>
     </div>
-  )
+  );
 }
