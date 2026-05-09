@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  useLessons,
-  useDeleteLesson,
-  useTogglePayment,
-} from "@/queries/useLessons";
+import { useLessons, useDeleteLesson, useTogglePayment } from "@/queries/useLessons";
 import { useStudents } from "@/queries/useStudents";
 import LessonModal from "@/components/lessons/LessonModal";
 import type { Lesson } from "@/types";
@@ -11,253 +7,233 @@ import MonthPicker from "@/components/ui/MonthPicker";
 import CalendarImport from "@/components/calendar/CalendarImport";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
+import { getInitials } from "@/lib/dateUtils";
+
+const IcPlus = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+  </svg>
+)
+const IcCalendar = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+)
+const IcEdit = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+  </svg>
+)
+const IcTrash = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/>
+    <path d="M10 11v6M14 11v6"/>
+  </svg>
+)
 
 export default function LessonsPage() {
   const [studentFilter, setStudentFilter] = useState<number | undefined>();
-  const [monthFilter, setMonthFilter] = useState(
-    new Date().toISOString().slice(0, 7),
-  );
-  const [paymentFilter, setPaymentFilter] = useState<
-    "paid" | "unpaid" | undefined
-  >();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editLesson, setEditLesson] = useState<Lesson | null>(null);
+  const [monthFilter, setMonthFilter]     = useState(new Date().toISOString().slice(0, 7));
+  const [paymentFilter, setPaymentFilter] = useState<'paid' | 'unpaid' | undefined>();
+  const [modalOpen, setModalOpen]         = useState(false);
+  const [editLesson, setEditLesson]       = useState<Lesson | null>(null);
   const [calendarImport, setCalendarImport] = useState(false);
-  const googleConnected = useSelector(
-    (state: RootState) => state.profile.googleCalendarConnected,
-  );
 
-  const { data: lessons = [], isLoading } = useLessons({
-    studentId: studentFilter,
-    month: monthFilter || undefined,
-    paymentStatus: paymentFilter,
-  });
+  const googleConnected = useSelector((s: RootState) => s.profile.googleCalendarConnected);
 
-  const { data: students = [] } = useStudents();
-  const deleteLesson = useDeleteLesson();
+  const { data: lessons  = [], isLoading } = useLessons({ studentId: studentFilter, month: monthFilter || undefined, paymentStatus: paymentFilter });
+  const { data: students = [] }            = useStudents();
+  const deleteLesson  = useDeleteLesson();
   const togglePayment = useTogglePayment();
 
-  const handleEdit = (lesson: Lesson) => {
-    setEditLesson(lesson);
-    setModalOpen(true);
-  };
-  const handleAdd = () => {
-    setEditLesson(null);
-    setModalOpen(true);
-  };
-  const handleDelete = (id: number) => {
-    if (confirm("Sigur vrei să ștergi această lecție?"))
-      deleteLesson.mutate(id);
-  };
-  const handleToggle = (lesson: Lesson) => {
-    togglePayment.mutate({
-      id: lesson.id!,
-      paymentStatus: lesson.paymentStatus === "paid" ? "unpaid" : "paid",
-    });
-  };
+  const handleEdit   = (l: Lesson) => { setEditLesson(l); setModalOpen(true) }
+  const handleAdd    = () => { setEditLesson(null); setModalOpen(true) }
+  const handleDelete = (id: number) => { if (confirm('Sigur vrei să ștergi această lecție?')) deleteLesson.mutate(id) }
+  const handleToggle = (l: Lesson) => togglePayment.mutate({ id: l.id!, paymentStatus: l.paymentStatus === 'paid' ? 'unpaid' : 'paid' })
 
-  const getStudentName = (studentId: number) =>
-    students.find((s) => s.id === studentId)?.name ?? "—";
-  const formatDate = (iso: string) =>
-    new Date(iso).toLocaleDateString("ro-RO", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+  const getStudent = (id: number) => students.find(s => s.id === id)
+  const fmtShort = (iso: string) => {
+    const d = new Date(iso)
+    return { day: d.getDate(), mon: d.toLocaleDateString('ro-RO', { month: 'short' }).replace('.', '') }
+  }
+  const fmtTime = (iso: string) => {
+    const d = new Date(iso)
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  }
+  const fmtDow = (iso: string) => new Date(iso).toLocaleDateString('ro-RO', { weekday: 'long' })
+
+  // Group by day
+  const grouped = lessons.reduce((acc, l) => {
+    const day = l.date.slice(0, 10)
+    if (!acc[day]) acc[day] = []
+    acc[day].push(l)
+    return acc
+  }, {} as Record<string, typeof lessons>)
+  const sortedDays = Object.entries(grouped).sort(([a], [b]) => b.localeCompare(a))
+
+  const totalRevenue = lessons.reduce((s, l) => s + l.pricePerSession, 0)
+  const unpaidCount  = lessons.filter(l => l.paymentStatus === 'unpaid').length
 
   return (
-    <div className="min-h-full p-4 md:p-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-6 gap-3">
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold text-(--text-1) tracking-tight">
-              Lecții
-            </h1>
-            <p className="text-(--text-2) text-sm mt-0.5">
-              {lessons.length} lecții
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            {googleConnected && (
-              <button
-                onClick={() => setCalendarImport(true)}
-                className="hidden md:flex items-center gap-2 bg-(--bg-card) border border-(--border) text-(--text-2) font-medium rounded-lg px-3 py-2 text-sm hover:border-(--border-hover) transition-colors"
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <rect x="1" y="2" width="12" height="11" rx="1.5" />
-                  <path d="M4 1v2M10 1v2M1 5.5h12" />
-                </svg>
-                <span className="hidden lg:inline">Import Calendar</span>
-              </button>
-            )}
-            <button
-              onClick={handleAdd}
-              className="bg-[#2b6777] text-white font-semibold rounded-lg px-3 md:px-4 py-2 text-sm hover:opacity-90 transition-opacity whitespace-nowrap"
-            >
-              + Adaugă
-            </button>
-          </div>
+    <div style={{ padding: '28px 36px 60px', maxWidth: 1280 }}>
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24, gap: 16, flexWrap: 'wrap' }}>
+        <div>
+          <h1 className="tt-page-title">Lecții</h1>
+          <p className="tt-page-sub">
+            {lessons.length} lecții
+            {totalRevenue > 0 && ` · ${totalRevenue.toLocaleString()} MDL`}
+            {unpaidCount > 0 && ` · ${unpaidCount} neachitate`}
+          </p>
         </div>
-
-        <div className="space-y-3 md:space-y-0 md:flex md:items-center md:gap-3 mb-4 md:mb-6">
-          <select
-            value={studentFilter ?? ""}
-            onChange={(e) =>
-              setStudentFilter(
-                e.target.value ? Number(e.target.value) : undefined,
-              )
-            }
-            className="w-full md:w-auto bg-(--bg-card) border border-(--border) rounded-lg px-3 py-2 text-sm text-(--text-1) focus:outline-none focus:border-[#2b6777] transition-colors"
-          >
-            <option value="">Toți studenții</option>
-            {students.map((s) => (
-              <option key={s.id} value={s.id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-
-          <MonthPicker value={monthFilter} onChange={setMonthFilter} />
-
-          <div className="flex gap-1 md:gap-2 overflow-x-auto">
-            {([undefined, "paid", "unpaid"] as const).map((p) => (
-              <button
-                key={p ?? "all"}
-                onClick={() => setPaymentFilter(p)}
-                className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
-                  paymentFilter === p
-                    ? "bg-[#2b6777] text-white"
-                    : "bg-(--bg-card) text-(--text-2) border border-(--border)"
-                }`}
-              >
-                {p === undefined
-                  ? "Toate"
-                  : p === "paid"
-                    ? "Achitate"
-                    : "Neachitate"}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {isLoading ? (
-          <p className="text-(--text-2) text-sm">Se încarcă...</p>
-        ) : lessons.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-(--text-3) text-sm">Nicio lecție găsită</p>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {googleConnected && (
             <button
-              onClick={handleAdd}
-              className="mt-4 text-[#52ab98] text-sm hover:underline"
+              onClick={() => setCalendarImport(true)}
+              className="tt-btn tt-btn-secondary"
+              style={{ height: 38, gap: 7 }}
             >
-              Adaugă prima lecție →
+              <IcCalendar /> Import Calendar
             </button>
-          </div>
-        ) : (
-          <div className="grid gap-2 md:gap-3">
-            {lessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className="bg-(--bg-card) border border-(--border) rounded-xl p-3 md:p-4"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="text-center min-w-[36px] md:min-w-[48px] flex-shrink-0">
-                      <p className="text-(--text-1) font-bold text-base md:text-lg leading-none">
-                        {new Date(lesson.date).getDate()}
-                      </p>
-                      <p className="text-(--text-2) text-xs mt-0.5">
-                        {new Date(lesson.date).toLocaleDateString("ro-RO", {
-                          month: "short",
-                        })}
-                      </p>
-                    </div>
-                    <div className="w-px h-8 bg-(--bg-input) flex-shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-(--text-1) font-medium text-sm truncate">
-                        {getStudentName(lesson.studentId)}
-                      </p>
-                      <p className="text-(--text-2) text-xs mt-0.5 truncate">
-                        {formatDate(lesson.date)} · {lesson.durationMinutes} min
-                        · {lesson.pricePerSession} MDL
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
-                    <button
-                      onClick={() => handleToggle(lesson)}
-                      className={`text-xs px-2 md:px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                        lesson.paymentStatus === "paid"
-                          ? "bg-[#2b6777]/10 text-[#52ab98]"
-                          : "bg-[#c07a20]/10 text-[#c07a20]"
-                      }`}
-                    >
-                      {lesson.paymentStatus === "paid"
-                        ? "Achitat"
-                        : "Neachitat"}
-                    </button>
-
-                    <span
-                      className={`hidden md:inline text-xs px-2.5 py-1 rounded-full ${
-                        lesson.status === "done"
-                          ? "bg-(--bg-input) text-(--text-3)"
-                          : "bg-red-400/10 text-red-400"
-                      }`}
-                    >
-                      {lesson.status === "done" ? "Efectuat" : "Anulat"}
-                    </span>
-
-                    <button
-                      onClick={() => handleEdit(lesson)}
-                      className="text-(--text-3) hover:text-(--text-1) text-xs transition-colors p-1.5 rounded-lg hover:bg-(--bg-input)"
-                    >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      >
-                        <path d="M10 2l2 2-7 7H3v-2L10 2z" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => handleDelete(lesson.id!)}
-                      className="text-(--text-3) hover:text-red-400 text-xs transition-colors p-1.5 rounded-lg hover:bg-red-400/10"
-                    >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      >
-                        <path d="M2 3h10M5 3V2h4v1M3 3l1 9h6l1-9" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+          )}
+          <button onClick={handleAdd} className="tt-btn tt-btn-primary" style={{ height: 38 }}>
+            <IcPlus /> Adaugă
+          </button>
+        </div>
       </div>
 
-      {modalOpen && (
-        <LessonModal lesson={editLesson} onClose={() => setModalOpen(false)} />
+      {/* Filters */}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+        <select
+          value={studentFilter ?? ''}
+          onChange={e => setStudentFilter(e.target.value ? Number(e.target.value) : undefined)}
+          className="tt-input"
+          style={{ width: 'auto', minWidth: 200 }}
+        >
+          <option value="">Toți studenții</option>
+          {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+        </select>
+
+        <MonthPicker value={monthFilter} onChange={setMonthFilter} />
+
+        <div className="tt-filter-row">
+          {([
+            [undefined, 'Toate'],
+            ['paid',    'Achitate'],
+            ['unpaid',  'Neachitate'],
+          ] as const).map(([k, lbl]) => (
+            <button
+              key={k ?? 'all'}
+              onClick={() => setPaymentFilter(k)}
+              className={`tt-filter-btn ${paymentFilter === k ? 'active' : ''}`}
+            >{lbl}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      {isLoading ? (
+        <p style={{ color: 'var(--text-3)', fontSize: 13.5 }}>Se încarcă...</p>
+      ) : lessons.length === 0 ? (
+        <div style={{ textAlign: 'center', paddingTop: 64 }}>
+          <p style={{ color: 'var(--text-3)', fontSize: 14 }}>Nicio lecție găsită</p>
+          <button onClick={handleAdd} style={{ marginTop: 12, color: 'var(--accent)', fontSize: 13.5, background: 'none', border: 'none', cursor: 'pointer' }}>
+            Adaugă prima lecție →
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+          {sortedDays.map(([day, dayLessons], gIdx) => {
+            const { day: d, mon } = fmtShort(day + 'T00:00')
+            const dow = fmtDow(day + 'T00:00')
+            return (
+              <div key={day} className="tt-card" style={{ padding: 0, overflow: 'hidden', marginBottom: 10 }}>
+                {/* Day header */}
+                <div style={{
+                  display: 'flex', justifyContent: 'space-between', padding: '9px 20px',
+                  background: 'var(--bg-page)',
+                  borderBottom: '0.5px solid var(--border)',
+                  fontSize: 11.5, fontWeight: 600, letterSpacing: '0.04em',
+                  color: 'var(--text-3)', textTransform: 'uppercase',
+                }}>
+                  <span style={{ textTransform: 'capitalize' }}>{dow}, {d} {mon}</span>
+                  <span className="tabular">
+                    {dayLessons.length} {dayLessons.length === 1 ? 'lecție' : 'lecții'} · {dayLessons.reduce((s, l) => s + l.pricePerSession, 0).toLocaleString()} MDL
+                  </span>
+                </div>
+
+                {/* Lesson rows */}
+                {dayLessons.map((lesson, i) => {
+                  const student = getStudent(lesson.studentId)
+                  return (
+                    <div
+                      key={lesson.id}
+                      style={{
+                        display: 'grid', gridTemplateColumns: '56px 1fr auto auto auto auto',
+                        alignItems: 'center', gap: 14, padding: '13px 20px',
+                        borderBottom: i < dayLessons.length - 1 ? '0.5px solid var(--border)' : 'none',
+                        transition: 'background 120ms',
+                      }}
+                      onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--bg-card-hover)'}
+                      onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+                    >
+                      <div className="tabular" style={{ fontSize: 12.5, color: 'var(--text-3)', fontWeight: 500, textAlign: 'center' }}>
+                        {fmtTime(lesson.date)}
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+                        {student && (
+                          <div className="tt-avatar" style={{ width: 30, height: 30, fontSize: 11, flexShrink: 0 }}>
+                            {getInitials(student.name)}
+                          </div>
+                        )}
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text-1)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {student?.name ?? '—'}
+                          </div>
+                          <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 1 }}>
+                            {student?.subject} · {lesson.durationMinutes} min
+                          </div>
+                        </div>
+                      </div>
+                      <div className="tabular" style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-1)' }}>
+                        {lesson.pricePerSession.toLocaleString()} MDL
+                      </div>
+                      <button
+                        onClick={() => handleToggle(lesson)}
+                        className={`tt-pill ${lesson.paymentStatus === 'paid' ? 'tt-pill-paid' : 'tt-pill-unpaid'}`}
+                        style={{ cursor: 'pointer', border: 'none', height: 24, transition: 'opacity 120ms' }}
+                        onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.8'}
+                        onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}
+                      >
+                        <span className={`tt-dot ${lesson.paymentStatus === 'paid' ? 'tt-dot-paid' : 'tt-dot-unpaid'}`} />
+                        {lesson.paymentStatus === 'paid' ? 'Achitat' : 'Neachitat'}
+                      </button>
+                      <button
+                        onClick={() => handleEdit(lesson)}
+                        style={{ width: 28, height: 28, borderRadius: 7, color: 'var(--text-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 120ms' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-card-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-1)' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-3)' }}
+                      ><IcEdit /></button>
+                      <button
+                        onClick={() => handleDelete(lesson.id!)}
+                        style={{ width: 28, height: 28, borderRadius: 7, color: 'var(--text-3)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 120ms' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--danger-soft)'; (e.currentTarget as HTMLElement).style.color = 'var(--danger)' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-3)' }}
+                      ><IcTrash /></button>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })}
+        </div>
       )}
-      {calendarImport && (
-        <CalendarImport onClose={() => setCalendarImport(false)} />
-      )}
+
+      {modalOpen     && <LessonModal lesson={editLesson} onClose={() => setModalOpen(false)} />}
+      {calendarImport && <CalendarImport onClose={() => setCalendarImport(false)} />}
     </div>
   );
 }
