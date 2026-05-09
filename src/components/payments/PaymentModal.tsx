@@ -12,29 +12,40 @@ interface Props {
   onClose: () => void
 }
 
+const IcClose = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+)
+const IcWallet = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+  </svg>
+)
+
 export default function PaymentModal({ payment, onClose }: Props) {
-  const profile = useSelector((state: RootState) => state.profile)
+  const profile = useSelector((s: RootState) => s.profile)
   const { data: students = [] } = useStudents()
 
   const [amount, setAmount] = useState(payment?.amount?.toString() ?? '')
   const [form, setForm] = useState({
     studentId: payment?.studentId ?? (students[0]?.id ?? 0),
-    currency: payment?.currency ?? profile.currency,
-    period: payment?.period ?? new Date().toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }),
-    status: payment?.status ?? 'unpaid' as 'paid' | 'unpaid' | 'partial',
-    date: payment?.date ?? toLocalISOString(new Date()).slice(0, 10),
-    notes: payment?.notes ?? '',
+    currency:  payment?.currency ?? profile.currency,
+    period:    payment?.period ?? new Date().toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }),
+    status:    (payment?.status ?? 'unpaid') as 'paid' | 'unpaid' | 'partial',
+    date:      payment?.date ?? toLocalISOString(new Date()).slice(0, 10),
+    notes:     payment?.notes ?? '',
     createdAt: payment?.createdAt ?? new Date().toISOString(),
   })
 
   const { data: unpaidLessons = [] } = useLessons({
-    studentId: form.studentId || undefined,
+    studentId:     form.studentId || undefined,
     paymentStatus: 'unpaid',
-    status: 'done',
+    status:        'done',
   })
+  const unpaidTotal = unpaidLessons.reduce((s, l) => s + l.pricePerSession, 0)
 
-  const unpaidTotal = unpaidLessons.reduce((sum, l) => sum + l.pricePerSession, 0)
-
+  // Auto-fill amount on student change
   useEffect(() => {
     if (!payment && form.studentId) {
       setAmount(unpaidTotal > 0 ? unpaidTotal.toString() : '')
@@ -44,126 +55,155 @@ export default function PaymentModal({ payment, onClose }: Props) {
   const createPayment = useCreatePayment()
   const updatePayment = useUpdatePayment()
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setForm(prev => ({
-      ...prev,
-      [name]: name === 'studentId' ? Number(value) : value,
-    }))
+    setForm(prev => ({ ...prev, [name]: name === 'studentId' ? Number(value) : value }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const data = { ...form, amount: Number(amount) }
-    if (payment?.id) {
-      updatePayment.mutate({ ...data, id: payment.id }, { onSuccess: onClose })
-    } else {
-      createPayment.mutate(data, { onSuccess: onClose })
-    }
+    if (payment?.id) updatePayment.mutate({ ...data, id: payment.id }, { onSuccess: onClose })
+    else             createPayment.mutate(data, { onSuccess: onClose })
   }
 
   const isValid = form.studentId && Number(amount) > 0 && form.period.trim()
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-(--bg-card) border border-(--border) rounded-2xl w-full max-w-md p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-(--text-1) font-bold text-lg">
-            {payment ? 'Editează plată' : 'Plată nouă'}
+    <div
+      onClick={e => e.target === e.currentTarget && onClose()}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        background: 'var(--bg-overlay)', backdropFilter: 'blur(6px)',
+        display: 'grid', placeItems: 'center', padding: 20,
+      }}
+    >
+      <div style={{
+        width: '100%', maxWidth: 480,
+        background: 'var(--bg-card)', borderRadius: 'var(--r-xl)',
+        boxShadow: 'var(--shadow-modal)',
+        border: '0.5px solid var(--border)',
+        overflow: 'hidden', maxHeight: '90vh',
+        display: 'flex', flexDirection: 'column',
+      }}>
+        {/* Header */}
+        <div style={{ padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '0.5px solid var(--border)', flexShrink: 0 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-1)', margin: 0 }}>
+            {payment ? 'Editează plată' : 'Înregistrează plată'}
           </h2>
-          <button onClick={onClose} className="text-(--text-3) hover:text-(--text-1) transition-colors text-xl leading-none">×</button>
+          <button
+            onClick={onClose}
+            style={{ width: 30, height: 30, borderRadius: 8, color: 'var(--text-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 120ms' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-card-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-1)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-2)' }}
+          ><IcClose /></button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm text-(--text-2) mb-1">Student</label>
-            <select name="studentId" value={form.studentId} onChange={handleChange}
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
-            >
-              {students.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-          </div>
+        {/* Body */}
+        <div style={{ padding: 22, overflowY: 'auto' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
 
-          {!payment && unpaidLessons.length > 0 && (
-            <div className="bg-[#c07a20]/10 border border-amber-400/20 rounded-lg px-4 py-3 flex items-center justify-between">
-              <div>
-                <p className="text-[#c07a20] text-xs font-medium">{unpaidLessons.length} lecții neachitate</p>
-                <p className="text-amber-300 text-sm font-bold mt-0.5">Total: {unpaidTotal} {profile.currency}</p>
+            {/* Student */}
+            <div>
+              <label className="tt-label">Student</label>
+              <select name="studentId" value={form.studentId} onChange={handleChange} className="tt-input">
+                {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
+
+            {/* Unpaid banner — key UX touch point */}
+            {!payment && unpaidLessons.length > 0 && (
+              <div style={{
+                padding: '13px 16px',
+                background: 'var(--warning-soft)',
+                border: '0.5px solid color-mix(in srgb, var(--warning) 25%, transparent)',
+                borderRadius: 'var(--r-md)',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ color: 'var(--warning)' }}><IcWallet /></span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--warning-strong)' }}>
+                      {unpaidLessons.length} {unpaidLessons.length === 1 ? 'lecție neachitată' : 'lecții neachitate'}
+                    </div>
+                    <div className="tabular" style={{ fontSize: 12, color: 'var(--warning-strong)', opacity: 0.8, marginTop: 1 }}>
+                      Total: {unpaidTotal.toLocaleString()} {profile.currency}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setAmount(unpaidTotal.toString())}
+                  style={{
+                    height: 30, padding: '0 12px', borderRadius: 7,
+                    background: 'var(--warning-strong)', color: 'white',
+                    fontSize: 12, fontWeight: 500, border: 'none', cursor: 'pointer',
+                    flexShrink: 0, fontFamily: 'var(--font-text)',
+                  }}
+                >Folosește suma</button>
               </div>
-              <button type="button" onClick={() => setAmount(unpaidTotal.toString())}
-                className="text-xs bg-amber-400 text-white font-semibold px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
-              >Folosește suma</button>
-            </div>
-          )}
+            )}
 
-          <div className="grid grid-cols-2 gap-3">
+            {/* Amount + Currency */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 10 }}>
+              <div>
+                <label className="tt-label">Sumă</label>
+                <input
+                  type="number" value={amount} onChange={e => setAmount(e.target.value)}
+                  placeholder="ex. 300" min={0}
+                  className="tt-input tabular"
+                  style={{ fontSize: 18, fontWeight: 600 }}
+                />
+              </div>
+              <div>
+                <label className="tt-label">Monedă</label>
+                <select name="currency" value={form.currency} onChange={handleChange} className="tt-input" style={{ width: 90 }}>
+                  <option value="MDL">MDL</option>
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Period */}
             <div>
-              <label className="block text-sm text-(--text-2) mb-1">Sumă</label>
-              <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
-                placeholder="ex. 200" min={0}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors"
-              />
+              <label className="tt-label">Perioadă</label>
+              <input name="period" value={form.period} onChange={handleChange} placeholder="ex. Aprilie 2026" className="tt-input" />
             </div>
+
+            {/* Date + Status */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <label className="tt-label">Data</label>
+                <input name="date" type="date" value={form.date} onChange={handleChange} className="tt-input" />
+              </div>
+              <div>
+                <label className="tt-label">Status</label>
+                <select name="status" value={form.status} onChange={handleChange} className="tt-input">
+                  <option value="unpaid">Neachitat</option>
+                  <option value="paid">Achitat</option>
+                  <option value="partial">Parțial</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Notes */}
             <div>
-              <label className="block text-sm text-(--text-2) mb-1">Monedă</label>
-              <select name="currency" value={form.currency} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
-              >
-                <option value="MDL">MDL</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-              </select>
+              <label className="tt-label">Note (opțional)</label>
+              <textarea name="notes" value={form.notes} onChange={handleChange} rows={2} placeholder="Numerar, transfer bancar..." className="tt-input" style={{ resize: 'none' }} />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm text-(--text-2) mb-1">Perioadă</label>
-            <input name="period" value={form.period} onChange={handleChange}
-              placeholder="ex. Aprilie 2026"
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm text-(--text-2) mb-1">Data</label>
-              <input name="date" type="date" value={form.date} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
-              />
+            {/* Footer */}
+            <div style={{ display: 'flex', gap: 10, paddingTop: 4 }}>
+              <button type="button" onClick={onClose} className="tt-btn tt-btn-secondary" style={{ flex: 1, height: 40, justifyContent: 'center' }}>
+                Anulează
+              </button>
+              <button type="submit" disabled={!isValid} className="tt-btn tt-btn-primary" style={{ flex: 1, height: 40, justifyContent: 'center' }}>
+                {payment ? 'Salvează' : 'Înregistrează plata'}
+              </button>
             </div>
-            <div>
-              <label className="block text-sm text-(--text-2) mb-1">Status</label>
-              <select name="status" value={form.status} onChange={handleChange}
-                className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm focus:outline-none focus:border-[#2b6777] transition-colors"
-              >
-                <option value="unpaid">Neachitat</option>
-                <option value="paid">Achitat</option>
-                <option value="partial">Parțial</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm text-(--text-2) mb-1">Note</label>
-            <textarea name="notes" value={form.notes} onChange={handleChange} rows={2}
-              placeholder="Observații opționale..."
-              className="w-full bg-(--bg-input) border border-(--border) rounded-lg px-3 py-2.5 text-(--text-1) text-sm placeholder:text-(--text-3) focus:outline-none focus:border-[#2b6777] transition-colors resize-none"
-            />
-          </div>
-
-          <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose}
-              className="flex-1 bg-(--bg-input) text-(--text-2) font-medium rounded-lg py-2.5 text-sm hover:bg-(--bg-card-hover) transition-colors"
-            >Anulează</button>
-            <button type="submit" disabled={!isValid}
-              className="flex-1 bg-[#2b6777] text-white font-semibold rounded-lg py-2.5 text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
-            >{payment ? 'Salvează' : 'Adaugă'}</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   )
